@@ -10,19 +10,9 @@ CREATE TABLE users(
   updated_on NOT NULL DEFAULT now()
 );
 
-CREATE TABLE journal_entries(
-  journal_entry_id INTEGER PRIMARY KEY,
-  created_on NOT NULL DEFAULT now(),
-  updated_on NOT NULL DEFAULT now()
-);
-
-CREATE TABLE journal(
-  journal_id INTEGER PRIMARY KEY,
-  user_id INTEGER REFERENCES users ON DELETE CASCADE
-);
-
 CREATE TABLE workouts(
   workout_id INTEGER PRIMARY KEY,
+  user_id INTEGER REFERENCES users ON DELETE CASCADE,
   created_on NOT NULL DEFAULT now(),
   updated_on NOT NULL DEFAULT now(),
   workout_name VARCHAR NOT NULL
