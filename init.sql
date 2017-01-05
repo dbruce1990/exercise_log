@@ -10,23 +10,33 @@ CREATE TABLE users(
   updated_on NOT NULL DEFAULT now()
 );
 
-CREATE TABLE workout_entries(
+CREATE TABLE journal_entries(
+  journal_entry_id INTEGER PRIMARY KEY,
+  created_on NOT NULL DEFAULT now(),
+  updated_on NOT NULL DEFAULT now()
+);
+
+CREATE TABLE journal(
+  journal_id INTEGER PRIMARY KEY,
+  user_id INTEGER REFERENCES users ON DELETE CASCADE
+);
+
+CREATE TABLE workouts(
   workout_id INTEGER PRIMARY KEY,
   created_on NOT NULL DEFAULT now(),
   updated_on NOT NULL DEFAULT now(),
-  workout_name VARCHAR,
-  user_id INTEGER ON DELETE CASCADE
+  workout_name VARCHAR NOT NULL
 );
 
-create table exercises(
+CREATE TABLE exercises(
   exercise_id INTEGER PRIMARY KEY,
   created_on NOT NULL DEFAULT now(),
   updated_on NOT NULL DEFAULT now(),
-  exercise_name NOT NULL
+  exercise_name VARCHAR NOT NULL
 );
 
-create table workout_exercises(
+CREATE TABLE workout_exercises(
   --implement cascading updates
-   workout_id INTEGER ON DELETE CASCADE,
-   exercise_id INTEGER ON DELETE CASCADE
+   workout_id INTEGER REFERENCES workouts ON DELETE CASCADE,
+   exercise_id INTEGER REFERENCES exercises ON DELETE CASCADE
 );
