@@ -16,7 +16,7 @@ var db = pgp(connectionString);
 
 function register(req, res, next){
   if(req.body.password === req.body.password_confirm){
-    let query = 'INSERT INTO users (username, password) VALUES ($1, $2)';
+    let query = 'INSERT INTO users (user_name, user_password_hash) VALUES ($1, $2)';
     let values = [req.body.username, req.body.password];
     db.any(query, values)
       .then(data => {
@@ -33,7 +33,7 @@ function login(req, res, next){
   let username = req.body.username;
   let password = req.body.password;
 
-  let query = 'SELECT username FROM users WHERE username=$1 AND password=$2';
+  let query = 'SELECT user_name FROM users WHERE user_name=$1 AND user_password_hash=$2';
   let values = [username, password];
   db.any(query, values)
     .then(data => {
