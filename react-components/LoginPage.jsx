@@ -4,7 +4,15 @@ class LoginPage extends Component {
     render() {
         return (
             <div>
-                <h1>hello from loginpage</h1>
+                <form>
+                    <label htmlFor="useremail">Email</label>
+                    <input type="email" name="user_email" />
+                    
+                    <label htmlFor="password">Password</label>
+                    <input type="password" name="password" />
+
+                    <input type="submit" value="Login" />
+                </form>
             </div>
         );
     }

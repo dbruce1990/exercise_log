@@ -67,6 +67,10 @@
 	
 	var _RegistrationPage2 = _interopRequireDefault(_RegistrationPage);
 	
+	var _MainLayout = __webpack_require__(/*! ./MainLayout.jsx */ 235);
+	
+	var _MainLayout2 = _interopRequireDefault(_MainLayout);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -117,9 +121,13 @@
 	      return _react2.default.createElement(
 	        _reactRouter.Router,
 	        { history: _reactRouter.browserHistory },
-	        _react2.default.createElement(_reactRouter.Route, { path: '/', component: HomePage }),
-	        _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _LoginPage2.default }),
-	        _react2.default.createElement(_reactRouter.Route, { path: '/register', component: _RegistrationPage2.default })
+	        _react2.default.createElement(
+	          _reactRouter.Route,
+	          { path: '/', component: _MainLayout2.default },
+	          _react2.default.createElement(_reactRouter.IndexRoute, { component: HomePage }),
+	          _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _LoginPage2.default }),
+	          _react2.default.createElement(_reactRouter.Route, { path: 'register', component: _RegistrationPage2.default })
+	        )
 	      );
 	    }
 	  }]);
@@ -27150,7 +27158,7 @@
   \****************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -27180,15 +27188,27 @@
 	    }
 	
 	    _createClass(LoginPage, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
+	                "div",
 	                null,
 	                _react2.default.createElement(
-	                    'h1',
+	                    "form",
 	                    null,
-	                    'hello from loginpage'
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "useremail" },
+	                        "Email"
+	                    ),
+	                    _react2.default.createElement("input", { type: "email", name: "user_email" }),
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "password" },
+	                        "Password"
+	                    ),
+	                    _react2.default.createElement("input", { type: "password", name: "password" }),
+	                    _react2.default.createElement("input", { type: "submit", value: "Login" })
 	                )
 	            );
 	        }
@@ -27206,7 +27226,7 @@
   \***********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -27236,19 +27256,39 @@
 	    }
 	
 	    _createClass(RegistrationPage, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
+	                "div",
 	                null,
 	                _react2.default.createElement(
-	                    'form',
+	                    "form",
 	                    null,
 	                    _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        'RegistrationPage!'
-	                    )
+	                        "label",
+	                        { htmlFor: "username" },
+	                        "Username"
+	                    ),
+	                    _react2.default.createElement("input", { type: "text", name: "username" }),
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "password" },
+	                        "Password"
+	                    ),
+	                    _react2.default.createElement("input", { type: "password", name: "password" }),
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "password_confirm" },
+	                        "Confirm Password"
+	                    ),
+	                    _react2.default.createElement("input", { type: "password", name: "password_confirm" }),
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "user_email" },
+	                        "Email"
+	                    ),
+	                    _react2.default.createElement("input", { type: "email", name: "user_email" }),
+	                    _react2.default.createElement("input", { type: "submit", value: "Sign up!" })
 	                )
 	            );
 	        }
@@ -27258,6 +27298,79 @@
 	}(_react.Component);
 	
 	exports.default = RegistrationPage;
+
+/***/ },
+/* 235 */
+/*!*****************************************!*\
+  !*** ./react-components/MainLayout.jsx ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 178);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MainLayout = function (_Component) {
+	    _inherits(MainLayout, _Component);
+	
+	    function MainLayout() {
+	        _classCallCheck(this, MainLayout);
+	
+	        return _possibleConstructorReturn(this, (MainLayout.__proto__ || Object.getPrototypeOf(MainLayout)).apply(this, arguments));
+	    }
+	
+	    _createClass(MainLayout, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'ul',
+	                    null,
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/' },
+	                        'Home'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/register' },
+	                        'Register'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/login' },
+	                        'Login'
+	                    )
+	                ),
+	                this.props.children
+	            );
+	        }
+	    }]);
+	
+	    return MainLayout;
+	}(_react.Component);
+	
+	exports.default = MainLayout;
 
 /***/ }
 /******/ ]);

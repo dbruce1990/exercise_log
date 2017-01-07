@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Router, Route, Link, browserHistory} from 'react-router';
+import {Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
 
 class HomePage extends React.Component {
   render() {
@@ -13,14 +13,17 @@ class HomePage extends React.Component {
 }
 import LoginPage from './LoginPage.jsx';
 import RegistrationPage from './RegistrationPage.jsx';
+import MainLayout from './MainLayout.jsx';
 
 class App extends React.Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path="/" component={HomePage}/>
-        <Route path="/login" component={LoginPage}/>
-        <Route path="/register" component={RegistrationPage}/>
+        <Route path="/" component={MainLayout}>
+          <IndexRoute component={HomePage}/>
+          <Route path="login" component={LoginPage}/>
+          <Route path="register" component={RegistrationPage}/>
+        </Route>
       </Router>
     );
   }
