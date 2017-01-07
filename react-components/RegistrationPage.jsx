@@ -4,7 +4,9 @@ class RegistrationPage extends Component {
     render() {
         return (
             <div>
-                <h1>hello from RegistrationPage!</h1>
+                <form>
+                    <h1>RegistrationPage!</h1>
+                </form>
             </div>
         );
     }

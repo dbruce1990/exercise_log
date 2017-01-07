@@ -4,8 +4,8 @@ var router = express.Router();
 var db = require('../dbConn');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('*', function(req, res) {
+  res.render('index');
 });
 
 router.post('/register', db.register);

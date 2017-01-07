@@ -7,7 +7,7 @@ var path = require('path');
 // var BUILD_DIR = path.resolve(__dirname, 'public');
 
 var config = {
-  entry: './react-components/index.js',
+  entry: './react-components/App.jsx',
   output: {
     path: './public',
     filename: 'bundle.js'
