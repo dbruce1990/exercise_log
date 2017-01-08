@@ -42,6 +42,7 @@ INSERT INTO exercises (exercise_name) VALUES ('horizontal row');
 INSERT INTO exercises (exercise_name) VALUES ('thinking');
 INSERT INTO exercises (exercise_name) VALUES ('hurts');
 INSERT INTO exercises (exercise_name) VALUES ('cat stretch');
+INSERT INTO exercises (exercise_name) VALUES ('what exercise?');
 
 INSERT INTO users (user_email, user_name, user_password_hash) VALUES ('fake@email.com', 'dustin', 'abc123');
 INSERT INTO users (user_email, user_name, user_password_hash) VALUES ('email@server.com', 'clayton', 'incorrect');

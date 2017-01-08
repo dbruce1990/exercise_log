@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require('../dbConn');
 
 /* GET home page. */
-router.get('*', function(req, res) {
+router.get('*', function (req, res) {
   res.render('index');
 });
 

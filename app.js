@@ -10,6 +10,17 @@ var users = require('./routes/users');
 
 var app = express();
 
+
+var jwt = require('express-jwt');
+
+var client_id = "client id";
+var client_secret = "client secret";
+var jwtCheck = jwt({
+    secret: client_secret,
+    audience: client_id
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -25,6 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+
+// Let React handle 404's I think...?
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   var err = new Error('Not Found');
