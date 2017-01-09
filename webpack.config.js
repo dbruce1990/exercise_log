@@ -1,12 +1,7 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
-// //react app codebase
-// var APP_DIR = path.resolve(__dirname, 'react-components');
-// //bundle.js
-// var BUILD_DIR = path.resolve(__dirname, 'public');
-
-var config = {
+const config = {
   entry: './react-components/App.jsx',
   output: {
     path: './public',
