@@ -1,19 +1,16 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router';
+import React, {Component} from 'react'
+import Nav from './Nav.jsx'
+
 
 class MainLayout extends Component {
     render() {
         return (
             <div>
-                <ul>
-                    <Link to="/">Home</Link>
-                    <Link to="/register">Register</Link>
-                    <Link to="/login">Login</Link>
-                </ul>
+                <Nav />
                 {this.props.children}
             </div>
         );
     }
 }
 
-export default MainLayout;
+export default MainLayout

@@ -27172,7 +27172,7 @@
   \****************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -27195,39 +27195,67 @@
 	var LoginPage = function (_Component) {
 	    _inherits(LoginPage, _Component);
 	
-	    function LoginPage() {
+	    function LoginPage(props) {
 	        _classCallCheck(this, LoginPage);
 	
-	        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
+	
+	        _this.state = {
+	            username: '',
+	            password: ''
+	        };
+	        _this.onSubmit = _this.onSubmit.bind(_this);
+	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
+	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
+	        return _this;
 	    }
 	
 	    _createClass(LoginPage, [{
-	        key: "submit",
-	        value: function submit(e) {
-	            e.preventDefault();
+	        key: 'onUsernameChange',
+	        value: function onUsernameChange(e) {
+	            this.setState({ username: e.target.value });
 	        }
 	    }, {
-	        key: "render",
+	        key: 'onPasswordChange',
+	        value: function onPasswordChange(e) {
+	            this.setState({ password: e.target.value });
+	        }
+	    }, {
+	        key: 'onSubmit',
+	        value: function onSubmit(e) {
+	            e.preventDefault();
+	            console.log(this.state);
+	        }
+	    }, {
+	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                "div",
+	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    "form",
-	                    null,
+	                    'form',
+	                    { onSubmit: this.onSubmit },
 	                    _react2.default.createElement(
-	                        "label",
-	                        { htmlFor: "useremail" },
-	                        "Email"
+	                        'label',
+	                        { htmlFor: 'useremail' },
+	                        'Email'
 	                    ),
-	                    _react2.default.createElement("input", { type: "email", name: "user_email" }),
+	                    _react2.default.createElement('input', {
+	                        type: 'email',
+	                        name: 'user_email',
+	                        value: this.state.username,
+	                        onChange: this.onUsernameChange }),
 	                    _react2.default.createElement(
-	                        "label",
-	                        { htmlFor: "password" },
-	                        "Password"
+	                        'label',
+	                        { htmlFor: 'password' },
+	                        'Password'
 	                    ),
-	                    _react2.default.createElement("input", { type: "password", name: "password" }),
-	                    _react2.default.createElement("input", { type: "submit", value: "Login" })
+	                    _react2.default.createElement('input', {
+	                        type: 'password',
+	                        name: 'password',
+	                        value: this.state.password,
+	                        onChange: this.onPasswordChange }),
+	                    _react2.default.createElement('input', { type: 'submit', value: 'Login' })
 	                )
 	            );
 	        }
@@ -27245,7 +27273,7 @@
   \***********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -27268,46 +27296,101 @@
 	var RegistrationPage = function (_Component) {
 	    _inherits(RegistrationPage, _Component);
 	
-	    function RegistrationPage() {
+	    function RegistrationPage(props) {
 	        _classCallCheck(this, RegistrationPage);
 	
-	        return _possibleConstructorReturn(this, (RegistrationPage.__proto__ || Object.getPrototypeOf(RegistrationPage)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (RegistrationPage.__proto__ || Object.getPrototypeOf(RegistrationPage)).call(this, props));
+	
+	        _this.state = {
+	            username: '',
+	            password: '',
+	            password_confirm: '',
+	            email: ''
+	        };
+	        _this.onSubmit = _this.onSubmit.bind(_this);
+	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
+	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
+	        _this.onPasswordConfirmChange = _this.onPasswordConfirmChange.bind(_this);
+	        _this.onEmailChange = _this.onEmailChange.bind(_this);
+	        return _this;
 	    }
 	
 	    _createClass(RegistrationPage, [{
-	        key: "render",
+	        key: 'onSubmit',
+	        value: function onSubmit(e) {
+	            e.preventDefault();
+	            console.log(this.state);
+	        }
+	    }, {
+	        key: 'onUsernameChange',
+	        value: function onUsernameChange(e) {
+	            this.setState({ username: e.target.value });
+	        }
+	    }, {
+	        key: 'onPasswordChange',
+	        value: function onPasswordChange(e) {
+	            this.setState({ password: e.target.value });
+	        }
+	    }, {
+	        key: 'onPasswordConfirmChange',
+	        value: function onPasswordConfirmChange(e) {
+	            this.setState({ password_confirm: e.target.value });
+	        }
+	    }, {
+	        key: 'onEmailChange',
+	        value: function onEmailChange(e) {
+	            this.setState({ email: e.target.value });
+	        }
+	    }, {
+	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                "div",
+	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    "form",
-	                    null,
+	                    'form',
+	                    { onSubmit: this.onSubmit },
 	                    _react2.default.createElement(
-	                        "label",
-	                        { htmlFor: "username" },
-	                        "Username"
+	                        'label',
+	                        { htmlFor: 'username' },
+	                        'Username'
 	                    ),
-	                    _react2.default.createElement("input", { type: "text", name: "username" }),
+	                    _react2.default.createElement('input', {
+	                        type: 'text',
+	                        name: 'username',
+	                        value: this.state.username,
+	                        onChange: this.onUsernameChange }),
 	                    _react2.default.createElement(
-	                        "label",
-	                        { htmlFor: "password" },
-	                        "Password"
+	                        'label',
+	                        { htmlFor: 'password' },
+	                        'Password'
 	                    ),
-	                    _react2.default.createElement("input", { type: "password", name: "password" }),
+	                    _react2.default.createElement('input', {
+	                        type: 'password',
+	                        name: 'password',
+	                        value: this.state.password,
+	                        onChange: this.onPasswordChange }),
 	                    _react2.default.createElement(
-	                        "label",
-	                        { htmlFor: "password_confirm" },
-	                        "Confirm Password"
+	                        'label',
+	                        { htmlFor: 'password_confirm' },
+	                        'Confirm Password'
 	                    ),
-	                    _react2.default.createElement("input", { type: "password", name: "password_confirm" }),
+	                    _react2.default.createElement('input', {
+	                        type: 'password',
+	                        name: 'password_confirm',
+	                        value: this.state.password_confirm,
+	                        onChange: this.onPasswordConfirmChange }),
 	                    _react2.default.createElement(
-	                        "label",
-	                        { htmlFor: "user_email" },
-	                        "Email"
+	                        'label',
+	                        { htmlFor: 'email' },
+	                        'Email'
 	                    ),
-	                    _react2.default.createElement("input", { type: "email", name: "user_email" }),
-	                    _react2.default.createElement("input", { type: "submit", value: "Sign up!" })
+	                    _react2.default.createElement('input', {
+	                        type: 'email',
+	                        name: 'email',
+	                        value: this.state.email,
+	                        onChange: this.onEmailChange }),
+	                    _react2.default.createElement('input', { type: 'submit', value: 'Sign up!' })
 	                )
 	            );
 	        }
@@ -27337,7 +27420,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouter = __webpack_require__(/*! react-router */ 178);
+	var _Nav = __webpack_require__(/*! ./Nav.jsx */ 236);
+	
+	var _Nav2 = _interopRequireDefault(_Nav);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -27362,25 +27447,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(
-	                    'ul',
-	                    null,
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/' },
-	                        'Home'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/register' },
-	                        'Register'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/login' },
-	                        'Login'
-	                    )
-	                ),
+	                _react2.default.createElement(_Nav2.default, null),
 	                this.props.children
 	            );
 	        }
@@ -27390,6 +27457,111 @@
 	}(_react.Component);
 	
 	exports.default = MainLayout;
+
+/***/ },
+/* 236 */
+/*!**********************************!*\
+  !*** ./react-components/Nav.jsx ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 178);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Nav = function (_Component) {
+	    _inherits(Nav, _Component);
+	
+	    function Nav(props) {
+	        _classCallCheck(this, Nav);
+	
+	        var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
+	
+	        _this.state = {
+	            loggedIn: true
+	        };
+	
+	        _this.isLoggedIn = _this.isLoggedIn.bind(_this);
+	        return _this;
+	    }
+	
+	    _createClass(Nav, [{
+	        key: 'isLoggedIn',
+	        value: function isLoggedIn() {
+	            return this.state.loggedIn;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'ul',
+	                    null,
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/' },
+	                            'Home'
+	                        )
+	                    ),
+	                    this.isLoggedIn && _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/logout' },
+	                            'Logout'
+	                        )
+	                    ),
+	                    !this.isLoggedIn && _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/register' },
+	                            'Register'
+	                        )
+	                    ),
+	                    !this.isLoggedIn && _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/login' },
+	                            'Sign In'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Nav;
+	}(_react.Component);
+	
+	exports.default = Nav;
 
 /***/ }
 /******/ ]);
