@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 
 class RegistrationPage extends Component {
     constructor(props) {
@@ -27,8 +27,18 @@ class RegistrationPage extends Component {
     }
 
     onSubmit(e) {
-        e.preventDefault();
-        console.log(this.state);
+        e.preventDefault()
+        console.log(this.state)
+
+        const req = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state)
+        }
+        fetch('/register', req).then(res => console.log(res)).then(data => console.log(data))
     }
 
     onUsernameChange(e) {

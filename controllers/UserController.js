@@ -1,23 +1,28 @@
 const db = require('../dbConn.js')
-
 const jwt = require('jsonwebtoken')
+
 const jwt_key = 'Someday, I should probably think of a really, really, good phrase for this.'
 
 function register(req, res, next) {
+    console.log(req.headers);
+    console.log(req.body);
     if (req.body.password === req.body.password_confirm) {
         const query = 'INSERT INTO users (user_name, user_password_hash, user_email) VALUES ($1, $2, $3' +
                 ')'
-        const values = [req.body.username, req.body.password, req.body.user_email]
-
+        const values = [req.body.username, req.body.password, req.body.email]
         db
             .any(query, values)
             .then(data => {
                 res.json({status: 'success'})
             })
             .catch(err => {
-                console.log(err)
+                res.json(err)
                 return next(err)
             })
+    } else {
+        res
+            .status(500)
+            .json({msg: "passwords do not match"})
     }
 }
 
@@ -34,14 +39,15 @@ function login(req, res, next) {
             const payload = {
                 data: data
             }
+
             const token = jwt.sign(payload, jwt_key, null, (err, token) => {
                 if (err) 
                     console.log(err)
                 res.json({token: token})
             });
+
         })
         .catch(err => {
-            console.log(err)
             return next(err)
         })
 }

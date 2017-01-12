@@ -11,14 +11,14 @@ const users = require('./routes/users');
 const app = express();
 
 
-const jwt = require('express-jwt');
+// const jwt = require('express-jwt');
 
-const client_id = "client id";
-const client_secret = "client secret";
-const jwtCheck = jwt({
-    secret: client_secret,
-    audience: client_id
-});
+// const client_id = "client id";
+// const client_secret = "client secret";
+// const jwtCheck = jwt({
+//     secret: client_secret,
+//     audience: client_id
+// });
 
 
 // view engine setup
