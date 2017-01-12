@@ -1,11 +1,10 @@
 const db = require('../dbConn.js')
 const jwt = require('jsonwebtoken')
+const dbErrorHandler = require('./dbErrorHandler.js')
 
 const jwt_key = 'Someday, I should probably think of a really, really, good phrase for this.'
 
 function register(req, res, next) {
-    console.log(req.headers);
-    console.log(req.body);
     if (req.body.password === req.body.password_confirm) {
         const query = 'INSERT INTO users (user_name, user_password_hash, user_email) VALUES ($1, $2, $3' +
                 ')'
@@ -15,10 +14,7 @@ function register(req, res, next) {
             .then(data => {
                 res.json({status: 'success'})
             })
-            .catch(err => {
-                res.json(err)
-                return next(err)
-            })
+            .catch(err => dbErrorHandler(res, err))
     } else {
         res
             .status(500)
