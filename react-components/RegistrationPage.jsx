@@ -31,8 +31,8 @@ class RegistrationPage extends Component {
         e.preventDefault()
         axios
             .post('/register', this.state)
-            .then(res => handleResponse(res))
-            .catch(err => handleError(err))
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     onUsernameChange(e) {

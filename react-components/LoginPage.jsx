@@ -1,25 +1,26 @@
 import React, {Component} from 'react';
+import axios from 'axios'
 
 class LoginPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            username: '',
+            email: '',
             password: ''
         }
         this.onSubmit = this
             .onSubmit
             .bind(this)
-        this.onUsernameChange = this
-            .onUsernameChange
+        this.onEmailChange = this
+            .onEmailChange
             .bind(this)
         this.onPasswordChange = this
             .onPasswordChange
             .bind(this)
     }
 
-    onUsernameChange(e) {
-        this.setState({username: e.target.value})
+    onEmailChange(e) {
+        this.setState({email: e.target.value})
     }
 
     onPasswordChange(e) {
@@ -28,7 +29,10 @@ class LoginPage extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
+        axios
+            .post('/login', this.state)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     render() {
@@ -39,8 +43,8 @@ class LoginPage extends Component {
                     <input
                         type="email"
                         name="user_email"
-                        value={this.state.username}
-                        onChange={this.onUsernameChange}/>
+                        value={this.state.email}
+                        onChange={this.onEmailChange}/>
 
                     <label htmlFor="password">Password</label>
                     <input

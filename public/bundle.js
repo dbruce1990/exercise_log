@@ -63,7 +63,7 @@
 	
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 	
-	var _RegistrationPage = __webpack_require__(/*! ./RegistrationPage.jsx */ 234);
+	var _RegistrationPage = __webpack_require__(/*! ./RegistrationPage.jsx */ 259);
 	
 	var _RegistrationPage2 = _interopRequireDefault(_RegistrationPage);
 	
@@ -22398,7 +22398,7 @@
 	
 	  var match = void 0,
 	      lastIndex = 0,
-	      matcher = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|\*\*|\*|\(|\)/g;
+	      matcher = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|\*\*|\*|\(|\)|\\\(|\\\)/g;
 	  while (match = matcher.exec(pattern)) {
 	    if (match.index !== lastIndex) {
 	      tokens.push(pattern.slice(lastIndex, match.index));
@@ -22418,6 +22418,10 @@
 	      regexpSource += '(?:';
 	    } else if (match[0] === ')') {
 	      regexpSource += ')?';
+	    } else if (match[0] === '\\(') {
+	      regexpSource += '\\(';
+	    } else if (match[0] === '\\)') {
+	      regexpSource += '\\)';
 	    }
 	
 	    tokens.push(match[0]);
@@ -22572,6 +22576,10 @@
 	      parenCount -= 1;
 	
 	      if (parenCount) parenHistory[parenCount - 1] += parenText;else pathname += parenText;
+	    } else if (token === '\\(') {
+	      pathname += '(';
+	    } else if (token === '\\)') {
+	      pathname += ')';
 	    } else if (token.charAt(0) === ':') {
 	      paramName = token.substring(1);
 	      paramValue = params[paramName];
@@ -22788,7 +22796,7 @@
 	        children = _props.children;
 	
 	
-	    !history.getCurrentLocation ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'You have provided a history object created with history v2.x or ' + 'earlier. This version of React Router is only compatible with v3 ' + 'history objects. Please upgrade to history v3.x.') : (0, _invariant2.default)(false) : void 0;
+	    !history.getCurrentLocation ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'You have provided a history object created with history v4.x or v2.x ' + 'and earlier. This version of React Router is only compatible with v3 ' + 'history objects. Please change to history v3.x.') : (0, _invariant2.default)(false) : void 0;
 	
 	    return (0, _createTransitionManager3.default)(history, (0, _RouteUtils.createRoutes)(routes || children));
 	  },
@@ -23460,7 +23468,7 @@
 	  return runTransitionHooks(hooks.length, function (index, replace, next) {
 	    var wrappedNext = function wrappedNext() {
 	      if (enterHooks.has(hooks[index])) {
-	        next();
+	        next.apply(undefined, arguments);
 	        enterHooks.remove(hooks[index]);
 	      }
 	    };
@@ -23484,7 +23492,7 @@
 	  return runTransitionHooks(hooks.length, function (index, replace, next) {
 	    var wrappedNext = function wrappedNext() {
 	      if (changeHooks.has(hooks[index])) {
-	        next();
+	        next.apply(undefined, arguments);
 	        changeHooks.remove(hooks[index]);
 	      }
 	    };
@@ -23901,9 +23909,14 @@
 	    if ((0, _PromiseUtils.isPromise)(indexRoutesReturn)) indexRoutesReturn.then(function (indexRoute) {
 	      return callback(null, (0, _RouteUtils.createRoutes)(indexRoute)[0]);
 	    }, callback);
-	  } else if (route.childRoutes) {
-	    (function () {
-	      var pathless = route.childRoutes.filter(function (childRoute) {
+	  } else if (route.childRoutes || route.getChildRoutes) {
+	    var onChildRoutes = function onChildRoutes(error, childRoutes) {
+	      if (error) {
+	        callback(error);
+	        return;
+	      }
+	
+	      var pathless = childRoutes.filter(function (childRoute) {
 	        return !childRoute.path;
 	      });
 	
@@ -23919,7 +23932,12 @@
 	      }, function (err, routes) {
 	        callback(null, routes);
 	      });
-	    })();
+	    };
+	
+	    var result = getChildRoutes(route, location, paramNames, paramValues, onChildRoutes);
+	    if (result) {
+	      onChildRoutes.apply(undefined, result);
+	    }
 	  } else {
 	    callback();
 	  }
@@ -23973,7 +23991,7 @@
 	    // By assumption, pattern is non-empty here, which is the prerequisite for
 	    // actually terminating a match.
 	    if (remainingPathname === '') {
-	      var _ret2 = function () {
+	      var _ret = function () {
 	        var match = {
 	          routes: [route],
 	          params: createParams(paramNames, paramValues)
@@ -24004,7 +24022,7 @@
 	        };
 	      }();
 	
-	      if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	    }
 	  }
 	
@@ -24600,7 +24618,7 @@
 	
 	    if (router) {
 	      // If user does not specify a `to` prop, return an empty anchor tag.
-	      if (to == null) {
+	      if (!to) {
 	        return _react2.default.createElement('a', props);
 	      }
 	
@@ -24723,6 +24741,10 @@
 	      var _this = this;
 	
 	      var router = this.props.router || this.context.router;
+	      if (!router) {
+	        return _react2.default.createElement(WrappedComponent, this.props);
+	      }
+	
 	      var params = router.params,
 	          location = router.location,
 	          routes = router.routes;
@@ -25418,6 +25440,92 @@
 	var strictUriEncode = __webpack_require__(/*! strict-uri-encode */ 212);
 	var objectAssign = __webpack_require__(/*! object-assign */ 4);
 	
+	function encoderForArrayFormat(opts) {
+		switch (opts.arrayFormat) {
+			case 'index':
+				return function (key, value, index) {
+					return value === null ? [
+						encode(key, opts),
+						'[',
+						index,
+						']'
+					].join('') : [
+						encode(key, opts),
+						'[',
+						encode(index, opts),
+						']=',
+						encode(value, opts)
+					].join('');
+				};
+	
+			case 'bracket':
+				return function (key, value) {
+					return value === null ? encode(key, opts) : [
+						encode(key, opts),
+						'[]=',
+						encode(value, opts)
+					].join('');
+				};
+	
+			default:
+				return function (key, value) {
+					return value === null ? encode(key, opts) : [
+						encode(key, opts),
+						'=',
+						encode(value, opts)
+					].join('');
+				};
+		}
+	}
+	
+	function parserForArrayFormat(opts) {
+		var result;
+	
+		switch (opts.arrayFormat) {
+			case 'index':
+				return function (key, value, accumulator) {
+					result = /\[(\d*)]$/.exec(key);
+	
+					key = key.replace(/\[\d*]$/, '');
+	
+					if (!result) {
+						accumulator[key] = value;
+						return;
+					}
+	
+					if (accumulator[key] === undefined) {
+						accumulator[key] = {};
+					}
+	
+					accumulator[key][result[1]] = value;
+				};
+	
+			case 'bracket':
+				return function (key, value, accumulator) {
+					result = /(\[])$/.exec(key);
+	
+					key = key.replace(/\[]$/, '');
+	
+					if (!result || accumulator[key] === undefined) {
+						accumulator[key] = value;
+						return;
+					}
+	
+					accumulator[key] = [].concat(accumulator[key], value);
+				};
+	
+			default:
+				return function (key, value, accumulator) {
+					if (accumulator[key] === undefined) {
+						accumulator[key] = value;
+						return;
+					}
+	
+					accumulator[key] = [].concat(accumulator[key], value);
+				};
+		}
+	}
+	
 	function encode(value, opts) {
 		if (opts.encode) {
 			return opts.strict ? strictUriEncode(value) : encodeURIComponent(value);
@@ -25426,11 +25534,29 @@
 		return value;
 	}
 	
+	function keysSorter(input) {
+		if (Array.isArray(input)) {
+			return input.sort();
+		} else if (typeof input === 'object') {
+			return keysSorter(Object.keys(input)).sort(function (a, b) {
+				return Number(a) - Number(b);
+			}).map(function (key) {
+				return input[key];
+			});
+		}
+	
+		return input;
+	}
+	
 	exports.extract = function (str) {
 		return str.split('?')[1] || '';
 	};
 	
-	exports.parse = function (str) {
+	exports.parse = function (str, opts) {
+		opts = objectAssign({arrayFormat: 'none'}, opts);
+	
+		var formatter = parserForArrayFormat(opts);
+	
 		// Create an object with no prototype
 		// https://github.com/sindresorhus/query-string/issues/47
 		var ret = Object.create(null);
@@ -25452,31 +25578,36 @@
 			var key = parts.shift();
 			var val = parts.length > 0 ? parts.join('=') : undefined;
 	
-			key = decodeURIComponent(key);
-	
 			// missing `=` should be `null`:
 			// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
 			val = val === undefined ? null : decodeURIComponent(val);
 	
-			if (ret[key] === undefined) {
-				ret[key] = val;
-			} else if (Array.isArray(ret[key])) {
-				ret[key].push(val);
-			} else {
-				ret[key] = [ret[key], val];
-			}
+			formatter(decodeURIComponent(key), val, ret);
 		});
 	
-		return ret;
+		return Object.keys(ret).sort().reduce(function (result, key) {
+			var val = ret[key];
+			if (Boolean(val) && typeof val === 'object' && !Array.isArray(val)) {
+				// Sort object keys, not values
+				result[key] = keysSorter(val);
+			} else {
+				result[key] = val;
+			}
+	
+			return result;
+		}, Object.create(null));
 	};
 	
 	exports.stringify = function (obj, opts) {
 		var defaults = {
 			encode: true,
-			strict: true
+			strict: true,
+			arrayFormat: 'none'
 		};
 	
 		opts = objectAssign(defaults, opts);
+	
+		var formatter = encoderForArrayFormat(opts);
 	
 		return obj ? Object.keys(obj).sort().map(function (key) {
 			var val = obj[key];
@@ -25497,11 +25628,7 @@
 						return;
 					}
 	
-					if (val2 === null) {
-						result.push(encode(key, opts));
-					} else {
-						result.push(encode(key, opts) + '=' + encode(val2, opts));
-					}
+					result.push(formatter(key, val2, result.length));
 				});
 	
 				return result.join('&');
@@ -27184,6 +27311,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _axios = __webpack_require__(/*! axios */ 234);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27201,19 +27332,19 @@
 	        var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
 	
 	        _this.state = {
-	            username: '',
+	            email: '',
 	            password: ''
 	        };
 	        _this.onSubmit = _this.onSubmit.bind(_this);
-	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
+	        _this.onEmailChange = _this.onEmailChange.bind(_this);
 	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(LoginPage, [{
-	        key: 'onUsernameChange',
-	        value: function onUsernameChange(e) {
-	            this.setState({ username: e.target.value });
+	        key: 'onEmailChange',
+	        value: function onEmailChange(e) {
+	            this.setState({ email: e.target.value });
 	        }
 	    }, {
 	        key: 'onPasswordChange',
@@ -27224,7 +27355,11 @@
 	        key: 'onSubmit',
 	        value: function onSubmit(e) {
 	            e.preventDefault();
-	            console.log(this.state);
+	            _axios2.default.post('/login', this.state).then(function (res) {
+	                return console.log(res);
+	            }).catch(function (err) {
+	                return console.log(err);
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -27243,8 +27378,8 @@
 	                    _react2.default.createElement('input', {
 	                        type: 'email',
 	                        name: 'user_email',
-	                        value: this.state.username,
-	                        onChange: this.onUsernameChange }),
+	                        value: this.state.email,
+	                        onChange: this.onEmailChange }),
 	                    _react2.default.createElement(
 	                        'label',
 	                        { htmlFor: 'password' },
@@ -27268,158 +27403,15 @@
 
 /***/ },
 /* 234 */
-/*!***********************************************!*\
-  !*** ./react-components/RegistrationPage.jsx ***!
-  \***********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _axios = __webpack_require__(/*! axios */ 235);
-	
-	var _axios2 = _interopRequireDefault(_axios);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var RegistrationPage = function (_Component) {
-	    _inherits(RegistrationPage, _Component);
-	
-	    function RegistrationPage(props) {
-	        _classCallCheck(this, RegistrationPage);
-	
-	        var _this = _possibleConstructorReturn(this, (RegistrationPage.__proto__ || Object.getPrototypeOf(RegistrationPage)).call(this, props));
-	
-	        _this.state = {
-	            username: '',
-	            password: '',
-	            password_confirm: '',
-	            email: ''
-	        };
-	        _this.onSubmit = _this.onSubmit.bind(_this);
-	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
-	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
-	        _this.onPasswordConfirmChange = _this.onPasswordConfirmChange.bind(_this);
-	        _this.onEmailChange = _this.onEmailChange.bind(_this);
-	        return _this;
-	    }
-	
-	    _createClass(RegistrationPage, [{
-	        key: 'onSubmit',
-	        value: function onSubmit(e) {
-	            e.preventDefault();
-	            _axios2.default.post('/register', this.state).then(function (res) {
-	                return handleResponse(res);
-	            }).catch(function (err) {
-	                return handleError(err);
-	            });
-	        }
-	    }, {
-	        key: 'onUsernameChange',
-	        value: function onUsernameChange(e) {
-	            this.setState({ username: e.target.value });
-	        }
-	    }, {
-	        key: 'onPasswordChange',
-	        value: function onPasswordChange(e) {
-	            this.setState({ password: e.target.value });
-	        }
-	    }, {
-	        key: 'onPasswordConfirmChange',
-	        value: function onPasswordConfirmChange(e) {
-	            this.setState({ password_confirm: e.target.value });
-	        }
-	    }, {
-	        key: 'onEmailChange',
-	        value: function onEmailChange(e) {
-	            this.setState({ email: e.target.value });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'form',
-	                    { onSubmit: this.onSubmit },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'username' },
-	                        'Username'
-	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'text',
-	                        name: 'username',
-	                        value: this.state.username,
-	                        onChange: this.onUsernameChange }),
-	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'password' },
-	                        'Password'
-	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'password',
-	                        name: 'password',
-	                        value: this.state.password,
-	                        onChange: this.onPasswordChange }),
-	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'password_confirm' },
-	                        'Confirm Password'
-	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'password',
-	                        name: 'password_confirm',
-	                        value: this.state.password_confirm,
-	                        onChange: this.onPasswordConfirmChange }),
-	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'email' },
-	                        'Email'
-	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'email',
-	                        name: 'email',
-	                        value: this.state.email,
-	                        onChange: this.onEmailChange }),
-	                    _react2.default.createElement('input', { type: 'submit', value: 'Sign up!' })
-	                )
-	            );
-	        }
-	    }]);
-	
-	    return RegistrationPage;
-	}(_react.Component);
-	
-	exports.default = RegistrationPage;
-
-/***/ },
-/* 235 */
 /*!**************************!*\
   !*** ./~/axios/index.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./lib/axios */ 236);
+	module.exports = __webpack_require__(/*! ./lib/axios */ 235);
 
 /***/ },
-/* 236 */
+/* 235 */
 /*!******************************!*\
   !*** ./~/axios/lib/axios.js ***!
   \******************************/
@@ -27427,10 +27419,10 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 237);
-	var bind = __webpack_require__(/*! ./helpers/bind */ 238);
-	var Axios = __webpack_require__(/*! ./core/Axios */ 239);
-	var defaults = __webpack_require__(/*! ./defaults */ 240);
+	var utils = __webpack_require__(/*! ./utils */ 236);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 237);
+	var Axios = __webpack_require__(/*! ./core/Axios */ 238);
+	var defaults = __webpack_require__(/*! ./defaults */ 239);
 	
 	/**
 	 * Create an instance of Axios
@@ -27463,15 +27455,15 @@
 	};
 	
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 257);
-	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 258);
-	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 254);
+	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 256);
+	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 257);
+	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 253);
 	
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(/*! ./helpers/spread */ 259);
+	axios.spread = __webpack_require__(/*! ./helpers/spread */ 258);
 	
 	module.exports = axios;
 	
@@ -27480,7 +27472,7 @@
 
 
 /***/ },
-/* 237 */
+/* 236 */
 /*!******************************!*\
   !*** ./~/axios/lib/utils.js ***!
   \******************************/
@@ -27488,7 +27480,7 @@
 
 	'use strict';
 	
-	var bind = __webpack_require__(/*! ./helpers/bind */ 238);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 237);
 	
 	/*global toString:true*/
 	
@@ -27788,7 +27780,7 @@
 
 
 /***/ },
-/* 238 */
+/* 237 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/bind.js ***!
   \*************************************/
@@ -27808,7 +27800,7 @@
 
 
 /***/ },
-/* 239 */
+/* 238 */
 /*!***********************************!*\
   !*** ./~/axios/lib/core/Axios.js ***!
   \***********************************/
@@ -27816,12 +27808,12 @@
 
 	'use strict';
 	
-	var defaults = __webpack_require__(/*! ./../defaults */ 240);
-	var utils = __webpack_require__(/*! ./../utils */ 237);
-	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 251);
-	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 252);
-	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 255);
-	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 256);
+	var defaults = __webpack_require__(/*! ./../defaults */ 239);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
+	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 250);
+	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 251);
+	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 254);
+	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 255);
 	
 	/**
 	 * Create a new instance of Axios
@@ -27902,7 +27894,7 @@
 
 
 /***/ },
-/* 240 */
+/* 239 */
 /*!*********************************!*\
   !*** ./~/axios/lib/defaults.js ***!
   \*********************************/
@@ -27910,8 +27902,8 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 237);
-	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 241);
+	var utils = __webpack_require__(/*! ./utils */ 236);
+	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 240);
 	
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -27928,10 +27920,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(/*! ./adapters/xhr */ 242);
+	    adapter = __webpack_require__(/*! ./adapters/xhr */ 241);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(/*! ./adapters/http */ 242);
+	    adapter = __webpack_require__(/*! ./adapters/http */ 241);
 	  }
 	  return adapter;
 	}
@@ -28005,7 +27997,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ },
-/* 241 */
+/* 240 */
 /*!****************************************************!*\
   !*** ./~/axios/lib/helpers/normalizeHeaderName.js ***!
   \****************************************************/
@@ -28013,7 +28005,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ../utils */ 237);
+	var utils = __webpack_require__(/*! ../utils */ 236);
 	
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -28026,7 +28018,7 @@
 
 
 /***/ },
-/* 242 */
+/* 241 */
 /*!*************************************!*\
   !*** ./~/axios/lib/adapters/xhr.js ***!
   \*************************************/
@@ -28034,13 +28026,13 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
-	var settle = __webpack_require__(/*! ./../core/settle */ 243);
-	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 246);
-	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 247);
-	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 248);
-	var createError = __webpack_require__(/*! ../core/createError */ 244);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 249);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
+	var settle = __webpack_require__(/*! ./../core/settle */ 242);
+	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 245);
+	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 246);
+	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 247);
+	var createError = __webpack_require__(/*! ../core/createError */ 243);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 248);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -28136,7 +28128,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 250);
+	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 249);
 	
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -28213,7 +28205,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ },
-/* 243 */
+/* 242 */
 /*!************************************!*\
   !*** ./~/axios/lib/core/settle.js ***!
   \************************************/
@@ -28221,7 +28213,7 @@
 
 	'use strict';
 	
-	var createError = __webpack_require__(/*! ./createError */ 244);
+	var createError = __webpack_require__(/*! ./createError */ 243);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -28247,7 +28239,7 @@
 
 
 /***/ },
-/* 244 */
+/* 243 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/core/createError.js ***!
   \*****************************************/
@@ -28255,7 +28247,7 @@
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(/*! ./enhanceError */ 245);
+	var enhanceError = __webpack_require__(/*! ./enhanceError */ 244);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -28273,7 +28265,7 @@
 
 
 /***/ },
-/* 245 */
+/* 244 */
 /*!******************************************!*\
   !*** ./~/axios/lib/core/enhanceError.js ***!
   \******************************************/
@@ -28301,7 +28293,7 @@
 
 
 /***/ },
-/* 246 */
+/* 245 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/helpers/buildURL.js ***!
   \*****************************************/
@@ -28309,7 +28301,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -28378,7 +28370,7 @@
 
 
 /***/ },
-/* 247 */
+/* 246 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/helpers/parseHeaders.js ***!
   \*********************************************/
@@ -28386,7 +28378,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
 	
 	/**
 	 * Parse headers into an object
@@ -28424,7 +28416,7 @@
 
 
 /***/ },
-/* 248 */
+/* 247 */
 /*!************************************************!*\
   !*** ./~/axios/lib/helpers/isURLSameOrigin.js ***!
   \************************************************/
@@ -28432,7 +28424,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -28501,7 +28493,7 @@
 
 
 /***/ },
-/* 249 */
+/* 248 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/btoa.js ***!
   \*************************************/
@@ -28546,7 +28538,7 @@
 
 
 /***/ },
-/* 250 */
+/* 249 */
 /*!****************************************!*\
   !*** ./~/axios/lib/helpers/cookies.js ***!
   \****************************************/
@@ -28554,7 +28546,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -28608,7 +28600,7 @@
 
 
 /***/ },
-/* 251 */
+/* 250 */
 /*!************************************************!*\
   !*** ./~/axios/lib/core/InterceptorManager.js ***!
   \************************************************/
@@ -28616,7 +28608,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -28669,7 +28661,7 @@
 
 
 /***/ },
-/* 252 */
+/* 251 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/core/dispatchRequest.js ***!
   \*********************************************/
@@ -28677,10 +28669,10 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
-	var transformData = __webpack_require__(/*! ./transformData */ 253);
-	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 254);
-	var defaults = __webpack_require__(/*! ../defaults */ 240);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
+	var transformData = __webpack_require__(/*! ./transformData */ 252);
+	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 253);
+	var defaults = __webpack_require__(/*! ../defaults */ 239);
 	
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -28757,7 +28749,7 @@
 
 
 /***/ },
-/* 253 */
+/* 252 */
 /*!*******************************************!*\
   !*** ./~/axios/lib/core/transformData.js ***!
   \*******************************************/
@@ -28765,7 +28757,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 236);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -28786,7 +28778,7 @@
 
 
 /***/ },
-/* 254 */
+/* 253 */
 /*!****************************************!*\
   !*** ./~/axios/lib/cancel/isCancel.js ***!
   \****************************************/
@@ -28800,7 +28792,7 @@
 
 
 /***/ },
-/* 255 */
+/* 254 */
 /*!**********************************************!*\
   !*** ./~/axios/lib/helpers/isAbsoluteURL.js ***!
   \**********************************************/
@@ -28823,7 +28815,7 @@
 
 
 /***/ },
-/* 256 */
+/* 255 */
 /*!********************************************!*\
   !*** ./~/axios/lib/helpers/combineURLs.js ***!
   \********************************************/
@@ -28844,7 +28836,7 @@
 
 
 /***/ },
-/* 257 */
+/* 256 */
 /*!**************************************!*\
   !*** ./~/axios/lib/cancel/Cancel.js ***!
   \**************************************/
@@ -28872,7 +28864,7 @@
 
 
 /***/ },
-/* 258 */
+/* 257 */
 /*!*******************************************!*\
   !*** ./~/axios/lib/cancel/CancelToken.js ***!
   \*******************************************/
@@ -28880,7 +28872,7 @@
 
 	'use strict';
 	
-	var Cancel = __webpack_require__(/*! ./Cancel */ 257);
+	var Cancel = __webpack_require__(/*! ./Cancel */ 256);
 	
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -28938,7 +28930,7 @@
 
 
 /***/ },
-/* 259 */
+/* 258 */
 /*!***************************************!*\
   !*** ./~/axios/lib/helpers/spread.js ***!
   \***************************************/
@@ -28972,6 +28964,149 @@
 	  };
 	};
 
+
+/***/ },
+/* 259 */
+/*!***********************************************!*\
+  !*** ./react-components/RegistrationPage.jsx ***!
+  \***********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _axios = __webpack_require__(/*! axios */ 234);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RegistrationPage = function (_Component) {
+	    _inherits(RegistrationPage, _Component);
+	
+	    function RegistrationPage(props) {
+	        _classCallCheck(this, RegistrationPage);
+	
+	        var _this = _possibleConstructorReturn(this, (RegistrationPage.__proto__ || Object.getPrototypeOf(RegistrationPage)).call(this, props));
+	
+	        _this.state = {
+	            username: '',
+	            password: '',
+	            password_confirm: '',
+	            email: ''
+	        };
+	        _this.onSubmit = _this.onSubmit.bind(_this);
+	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
+	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
+	        _this.onPasswordConfirmChange = _this.onPasswordConfirmChange.bind(_this);
+	        _this.onEmailChange = _this.onEmailChange.bind(_this);
+	        return _this;
+	    }
+	
+	    _createClass(RegistrationPage, [{
+	        key: 'onSubmit',
+	        value: function onSubmit(e) {
+	            e.preventDefault();
+	            _axios2.default.post('/register', this.state).then(function (res) {
+	                return console.log(res);
+	            }).catch(function (err) {
+	                return console.log(err);
+	            });
+	        }
+	    }, {
+	        key: 'onUsernameChange',
+	        value: function onUsernameChange(e) {
+	            this.setState({ username: e.target.value });
+	        }
+	    }, {
+	        key: 'onPasswordChange',
+	        value: function onPasswordChange(e) {
+	            this.setState({ password: e.target.value });
+	        }
+	    }, {
+	        key: 'onPasswordConfirmChange',
+	        value: function onPasswordConfirmChange(e) {
+	            this.setState({ password_confirm: e.target.value });
+	        }
+	    }, {
+	        key: 'onEmailChange',
+	        value: function onEmailChange(e) {
+	            this.setState({ email: e.target.value });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: this.onSubmit },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'username' },
+	                        'Username'
+	                    ),
+	                    _react2.default.createElement('input', {
+	                        type: 'text',
+	                        name: 'username',
+	                        value: this.state.username,
+	                        onChange: this.onUsernameChange }),
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'password' },
+	                        'Password'
+	                    ),
+	                    _react2.default.createElement('input', {
+	                        type: 'password',
+	                        name: 'password',
+	                        value: this.state.password,
+	                        onChange: this.onPasswordChange }),
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'password_confirm' },
+	                        'Confirm Password'
+	                    ),
+	                    _react2.default.createElement('input', {
+	                        type: 'password',
+	                        name: 'password_confirm',
+	                        value: this.state.password_confirm,
+	                        onChange: this.onPasswordConfirmChange }),
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'email' },
+	                        'Email'
+	                    ),
+	                    _react2.default.createElement('input', {
+	                        type: 'email',
+	                        name: 'email',
+	                        value: this.state.email,
+	                        onChange: this.onEmailChange }),
+	                    _react2.default.createElement('input', { type: 'submit', value: 'Sign up!' })
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return RegistrationPage;
+	}(_react.Component);
+	
+	exports.default = RegistrationPage;
 
 /***/ },
 /* 260 */
