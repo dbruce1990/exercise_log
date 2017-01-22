@@ -29260,6 +29260,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _axios = __webpack_require__(/*! axios */ 236);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29271,19 +29275,65 @@
 	var NewWorkoutPage = function (_Component) {
 	    _inherits(NewWorkoutPage, _Component);
 	
-	    function NewWorkoutPage() {
+	    function NewWorkoutPage(props) {
 	        _classCallCheck(this, NewWorkoutPage);
 	
-	        return _possibleConstructorReturn(this, (NewWorkoutPage.__proto__ || Object.getPrototypeOf(NewWorkoutPage)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (NewWorkoutPage.__proto__ || Object.getPrototypeOf(NewWorkoutPage)).call(this, props));
+	
+	        _this.state = {
+	            workoutName: ""
+	        };
+	        _this.workoutNameOnChange = _this.workoutNameOnChange.bind(_this);
+	        _this.onSubmit = _this.onSubmit.bind(_this);
+	        return _this;
 	    }
 	
 	    _createClass(NewWorkoutPage, [{
+	        key: 'onSubmit',
+	        value: function onSubmit(e) {
+	            e.preventDefault();
+	            _axios2.default.post('/workouts/new', this.state).then(function (res) {
+	                return console.log(res);
+	            }).catch(function (err) {
+	                return console.log(err);
+	            });
+	        }
+	    }, {
+	        key: 'workoutNameOnChange',
+	        value: function workoutNameOnChange(e) {
+	            this.setState({ workoutName: e.target.value });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement('form', null)
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: this.onSubmit },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement('input', {
+	                            type: 'text',
+	                            id: 'workout_name',
+	                            className: 'mdl-textfield__input',
+	                            onChange: this.workoutNameOnChange }),
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'workout_name', className: 'mdl-textfield__label' },
+	                            'Name'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'button',
+	                        {
+	                            type: 'submit',
+	                            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' },
+	                        'Save'
+	                    )
+	                )
 	            );
 	        }
 	    }]);

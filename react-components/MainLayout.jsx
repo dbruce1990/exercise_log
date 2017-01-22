@@ -24,6 +24,7 @@ class MainLayout extends Component {
     isLoggedIn() {
         return this.state.loggedIn
     }
+    
     title() {
         return <span className="mdl-layout-title">Exercise Log</span>
     }

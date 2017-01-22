@@ -1,6 +1,6 @@
 const db = require('../dbConn.js')
 const dbErrorHandler = require('./dbErrorHandler.js')
-const tokenHandler = require('./tokenHandler.js');
+const tokenHandler = require('./tokenHandler.js')
 const bcrypt = require('bcryptjs')
 
 const defaultErrMsg = res => res
