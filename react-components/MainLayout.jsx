@@ -3,7 +3,7 @@ import {Link} from 'react-router'
 
 class MainLayout extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             loggedIn: true,

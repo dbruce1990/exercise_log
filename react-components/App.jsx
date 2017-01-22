@@ -11,10 +11,14 @@ class HomePage extends React.Component {
     )
   }
 }
+
+import MainLayout from './MainLayout.jsx'
+import NotFound from './NotFound.jsx'
+
 import LoginPage from './LoginPage.jsx'
 import RegistrationPage from './RegistrationPage.jsx'
-import MainLayout from './MainLayout.jsx'
 import WorkoutsPage from './WorkoutsPage.jsx'
+import NewWorkoutPage from './NewWorkoutPage.jsx'
 
 class App extends React.Component {
   render() {
@@ -24,7 +28,12 @@ class App extends React.Component {
           <IndexRoute component={HomePage}/>
           <Route path="login" component={LoginPage}/>
           <Route path="register" component={RegistrationPage}/>
-          <Route path="workouts" component={WorkoutsPage}/>
+          <Route path="workouts">
+            <IndexRoute component={WorkoutsPage}/>
+            <Route path="new" component={NewWorkoutPage}/>
+          </Route>
+
+          <Route path="*" component={NotFound} />
         </Route>
       </Router>
     )
