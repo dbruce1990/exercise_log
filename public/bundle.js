@@ -71,6 +71,10 @@
 	
 	var _MainLayout2 = _interopRequireDefault(_MainLayout);
 	
+	var _WorkoutsPage = __webpack_require__(/*! ./WorkoutsPage.jsx */ 262);
+	
+	var _WorkoutsPage2 = _interopRequireDefault(_WorkoutsPage);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -126,7 +130,8 @@
 	          { path: '/', component: _MainLayout2.default },
 	          _react2.default.createElement(_reactRouter.IndexRoute, { component: HomePage }),
 	          _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _LoginPage2.default }),
-	          _react2.default.createElement(_reactRouter.Route, { path: 'register', component: _RegistrationPage2.default })
+	          _react2.default.createElement(_reactRouter.Route, { path: 'register', component: _RegistrationPage2.default }),
+	          _react2.default.createElement(_reactRouter.Route, { path: 'workouts', component: _WorkoutsPage2.default })
 	        )
 	      );
 	    }
@@ -29127,9 +29132,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Nav = __webpack_require__(/*! ./Nav.jsx */ 261);
-	
-	var _Nav2 = _interopRequireDefault(_Nav);
+	var _reactRouter = __webpack_require__(/*! react-router */ 178);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29142,20 +29145,101 @@
 	var MainLayout = function (_Component) {
 	    _inherits(MainLayout, _Component);
 	
-	    function MainLayout() {
+	    function MainLayout(props) {
 	        _classCallCheck(this, MainLayout);
 	
-	        return _possibleConstructorReturn(this, (MainLayout.__proto__ || Object.getPrototypeOf(MainLayout)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (MainLayout.__proto__ || Object.getPrototypeOf(MainLayout)).call(this, props));
+	
+	        _this.state = {
+	            loggedIn: true,
+	            routes: [{
+	                path: "/workouts",
+	                text: "Workouts",
+	                requiresAuthentication: true
+	            }]
+	        };
+	
+	        _this.isLoggedIn = _this.isLoggedIn.bind(_this);
+	        return _this;
 	    }
 	
 	    _createClass(MainLayout, [{
+	        key: 'isLoggedIn',
+	        value: function isLoggedIn() {
+	            return this.state.loggedIn;
+	        }
+	    }, {
+	        key: 'title',
+	        value: function title() {
+	            return _react2.default.createElement(
+	                'span',
+	                { className: 'mdl-layout-title' },
+	                'Exercise Log'
+	            );
+	        }
+	    }, {
+	        key: 'nav',
+	        value: function nav(navClass) {
+	            return _react2.default.createElement(
+	                'nav',
+	                { className: navClass },
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/', className: 'mdl-navigation__link' },
+	                    'Home'
+	                ),
+	                this.state.routes.map(function (route, index) {
+	                    return _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { key: index, to: route.path, className: 'mdl-navigation__link' },
+	                        route.text
+	                    );
+	                }),
+	                this.isLoggedIn == true && _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/logout', className: 'mdl-navigation__link' },
+	                    'Logout'
+	                ),
+	                this.isLoggedIn != true && _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/register', className: 'mdl-navigation__link' },
+	                    'Register'
+	                ),
+	                this.isLoggedIn != true && _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/login', className: 'mdl-navigation__link' },
+	                    'Sign In'
+	                )
+	            );
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
-	                null,
-	                _react2.default.createElement(_Nav2.default, null),
-	                this.props.children
+	                { className: 'mdl-layout--no-desktop-drawer-button mdl-js-layout mdl-layout--fixed-header' },
+	                _react2.default.createElement(
+	                    'header',
+	                    { className: 'mdl-layout__header' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'mdl-layout__header-row' },
+	                        this.title(),
+	                        _react2.default.createElement('div', { className: 'mdl-layout-spacer' }),
+	                        this.nav("mdl-navigation mdl-layout--large-screen-only")
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'mdl-layout__drawer' },
+	                    this.title(),
+	                    this.nav("mdl-navigation")
+	                ),
+	                _react2.default.createElement(
+	                    'main',
+	                    { className: 'mdl-layout__content' },
+	                    this.props.children
+	                )
 	            );
 	        }
 	    }]);
@@ -29166,10 +29250,11 @@
 	exports.default = MainLayout;
 
 /***/ },
-/* 261 */
-/*!**********************************!*\
-  !*** ./react-components/Nav.jsx ***!
-  \**********************************/
+/* 261 */,
+/* 262 */
+/*!*******************************************!*\
+  !*** ./react-components/WorkoutsPage.jsx ***!
+  \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29184,8 +29269,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouter = __webpack_require__(/*! react-router */ 178);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29194,81 +29277,34 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Nav = function (_Component) {
-	    _inherits(Nav, _Component);
+	var WorkoutsPage = function (_Component) {
+	    _inherits(WorkoutsPage, _Component);
 	
-	    function Nav(props) {
-	        _classCallCheck(this, Nav);
+	    function WorkoutsPage() {
+	        _classCallCheck(this, WorkoutsPage);
 	
-	        var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
-	
-	        _this.state = {
-	            loggedIn: true
-	        };
-	
-	        _this.isLoggedIn = _this.isLoggedIn.bind(_this);
-	        return _this;
+	        return _possibleConstructorReturn(this, (WorkoutsPage.__proto__ || Object.getPrototypeOf(WorkoutsPage)).apply(this, arguments));
 	    }
 	
-	    _createClass(Nav, [{
-	        key: 'isLoggedIn',
-	        value: function isLoggedIn() {
-	            return this.state.loggedIn;
-	        }
-	    }, {
+	    _createClass(WorkoutsPage, [{
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    'ul',
+	                    'p',
 	                    null,
-	                    _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/' },
-	                            'Home'
-	                        )
-	                    ),
-	                    this.isLoggedIn == true && _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/logout' },
-	                            'Logout'
-	                        )
-	                    ),
-	                    this.isLoggedIn != true && _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/register' },
-	                            'Register'
-	                        )
-	                    ),
-	                    this.isLoggedIn != true && _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/login' },
-	                            'Sign In'
-	                        )
-	                    )
+	                    'workouts'
 	                )
 	            );
 	        }
 	    }]);
 	
-	    return Nav;
+	    return WorkoutsPage;
 	}(_react.Component);
 	
-	exports.default = Nav;
+	exports.default = WorkoutsPage;
 
 /***/ }
 /******/ ]);
