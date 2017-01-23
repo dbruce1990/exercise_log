@@ -8,8 +8,10 @@ class WorkoutsPage extends Component {
         this.state = {
             workouts: []
         }
+
     }
-    componentWillMount() {
+    
+    getWorkouts() {
         axios
             .get('/api/workouts')
             .then(res => {
@@ -17,6 +19,10 @@ class WorkoutsPage extends Component {
                 this.setState({workouts: res.data.workouts})
             })
             .catch(err => console.log(err))
+    }
+
+    componentWillMount() {
+        this.getWorkouts()
     }
 
     render() {
@@ -35,7 +41,7 @@ class WorkoutsPage extends Component {
                         {this
                             .state
                             .workouts
-                            .map((workout,index) => <tr key={index}>
+                            .map((workout, index) => <tr key={index}>
                                 <td>{workout.workout_name}</td>
                             </tr>)}
                     </tbody>

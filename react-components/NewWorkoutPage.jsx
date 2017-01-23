@@ -27,17 +27,25 @@ class NewWorkoutPage extends Component {
         this.setState({workoutName: e.target.value})
     }
 
+    componentDidMount() {
+        componentHandler.upgradeDom()
+    }
+
+    componentDidUpdate() {
+        componentHandler.upgradeDom()
+    }
+
     render() {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
                     <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label htmlFor="workout_name" className="mdl-textfield__label">Name</label>
                         <input
+                            className="mdl-textfield__input"
                             type="text"
                             id="workout_name"
-                            className="mdl-textfield__input"
                             onChange={this.workoutNameOnChange}/>
-                        <label htmlFor="workout_name" className="mdl-textfield__label">Name</label>
                     </div>
 
                     <button

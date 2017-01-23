@@ -29268,12 +29268,13 @@
 	        _this.state = {
 	            workouts: []
 	        };
+	
 	        return _this;
 	    }
 	
 	    _createClass(WorkoutsPage, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
+	        key: 'getWorkouts',
+	        value: function getWorkouts() {
 	            var _this2 = this;
 	
 	            _axios2.default.get('/api/workouts').then(function (res) {
@@ -29282,6 +29283,11 @@
 	            }).catch(function (err) {
 	                return console.log(err);
 	            });
+	        }
+	    }, {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getWorkouts();
 	        }
 	    }, {
 	        key: 'render',
@@ -29403,6 +29409,16 @@
 	            this.setState({ workoutName: e.target.value });
 	        }
 	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            componentHandler.upgradeDom();
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            componentHandler.upgradeDom();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -29414,16 +29430,16 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
-	                        _react2.default.createElement('input', {
-	                            type: 'text',
-	                            id: 'workout_name',
-	                            className: 'mdl-textfield__input',
-	                            onChange: this.workoutNameOnChange }),
 	                        _react2.default.createElement(
 	                            'label',
 	                            { htmlFor: 'workout_name', className: 'mdl-textfield__label' },
 	                            'Name'
-	                        )
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'text',
+	                            id: 'workout_name',
+	                            onChange: this.workoutNameOnChange })
 	                    ),
 	                    _react2.default.createElement(
 	                        'button',
