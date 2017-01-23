@@ -12,6 +12,7 @@ function create(req, res, next) {
     db
         .none(query, values)
         .then(() => {
+            
             res.json({
                 error: null,
                 content: {
