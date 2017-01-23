@@ -50,40 +50,58 @@ class RegistrationPage extends Component {
     onEmailChange(e) {
         this.setState({email: e.target.value})
     }
-
+    // <div className="mdl-textfield mdl-js-textfield
+    // mdl-textfield--floating-label"> < input type = "text" id="workout_name"
+    // className="mdl-textfield__input" onChange={this.workoutNameOnChange}/> <label
+    // htmlFor="workout_name" className="mdl-textfield__label">Name</label> </div>
     render() {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={this.state.username}
-                        onChange={this.onUsernameChange}/>
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label htmlFor="username" className="mdl-textfield__label">Username</label>
+                        <input
+                            className="mdl-textfield__input"
+                            type="text"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.onUsernameChange}/>
+                    </div>
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={this.state.password}
-                        onChange={this.onPasswordChange}/>
+                        <label htmlFor="password" className="mdl-textfield__label">Password</label>
+                        <input
+                            className="mdl-textfield__input"
+                            type="password"
+                            name="password"
+                            value={this.state.password}
+                            onChange={this.onPasswordChange}/>
+                    </div>
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label htmlFor="password_confirm" className="mdl-textfield__label">Confirm Password</label>
+                        <input
+                            className="mdl-textfield__input"
+                            type="password"
+                            name="password_confirm"
+                            value={this.state.password_confirm}
+                            onChange={this.onPasswordConfirmChange}/>
+                    </div >
 
-                    <label htmlFor="password_confirm">Confirm Password</label>
-                    <input
-                        type="password"
-                        name="password_confirm"
-                        value={this.state.password_confirm}
-                        onChange={this.onPasswordConfirmChange}/>
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label htmlFor="email" className="mdl-textfield__label">Email</label>
+                        <input
+                            className="mdl-textfield__input"
+                            type="email"
+                            name="email"
+                            value={this.state.email}
+                            onChange={this.onEmailChange}/>
+                    </div>
 
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={this.state.email}
-                        onChange={this.onEmailChange}/>
-
-                    <input type="submit" value="Sign up!"/>
+                    <button
+                        type="submit"
+                        className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Sign up!
+                    </button>
                 </form>
             </div>
         );

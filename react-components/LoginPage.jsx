@@ -39,21 +39,30 @@ class LoginPage extends Component {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <label htmlFor="useremail">Email</label>
-                    <input
-                        type="email"
-                        name="user_email"
-                        value={this.state.email}
-                        onChange={this.onEmailChange}/>
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label htmlFor="useremail" className="mdl-textfield__label">Email</label>
+                        <input
+                            className="mdl-textfield__input"
+                            type="email"
+                            name="user_email"
+                            value={this.state.email}
+                            onChange={this.onEmailChange}/>
+                    </div>
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label htmlFor="password" className="mdl-textfield__label">Password</label>
+                        <input
+                            className="mdl-textfield__input"
+                            type="password"
+                            name="password"
+                            value={this.state.password}
+                            onChange={this.onPasswordChange}/>
+                    </div>
 
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={this.state.password}
-                        onChange={this.onPasswordChange}/>
-
-                    <input type="submit" value="Login"/>
+                    <button
+                        type="submit"
+                        className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Login
+                    </button>
                 </form>
             </div>
         );

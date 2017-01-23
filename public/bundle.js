@@ -144,8 +144,7 @@
 	            { path: 'workouts' },
 	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _WorkoutsPage2.default }),
 	            _react2.default.createElement(_reactRouter.Route, { path: 'new', component: _NewWorkoutPage2.default })
-	          ),
-	          _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NotFound2.default })
+	          )
 	        )
 	      );
 	    }
@@ -27441,26 +27440,42 @@
 	                    'form',
 	                    { onSubmit: this.onSubmit },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'useremail' },
-	                        'Email'
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'useremail', className: 'mdl-textfield__label' },
+	                            'Email'
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'email',
+	                            name: 'user_email',
+	                            value: this.state.email,
+	                            onChange: this.onEmailChange })
 	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'email',
-	                        name: 'user_email',
-	                        value: this.state.email,
-	                        onChange: this.onEmailChange }),
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'password' },
-	                        'Password'
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'password', className: 'mdl-textfield__label' },
+	                            'Password'
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'password',
+	                            name: 'password',
+	                            value: this.state.password,
+	                            onChange: this.onPasswordChange })
 	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'password',
-	                        name: 'password',
-	                        value: this.state.password,
-	                        onChange: this.onPasswordChange }),
-	                    _react2.default.createElement('input', { type: 'submit', value: 'Login' })
+	                    _react2.default.createElement(
+	                        'button',
+	                        {
+	                            type: 'submit',
+	                            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' },
+	                        'Login'
+	                    )
 	                )
 	            );
 	        }
@@ -29118,6 +29133,11 @@
 	        value: function onEmailChange(e) {
 	            this.setState({ email: e.target.value });
 	        }
+	        // <div className="mdl-textfield mdl-js-textfield
+	        // mdl-textfield--floating-label"> < input type = "text" id="workout_name"
+	        // className="mdl-textfield__input" onChange={this.workoutNameOnChange}/> <label
+	        // htmlFor="workout_name" className="mdl-textfield__label">Name</label> </div>
+	
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -29128,46 +29148,72 @@
 	                    'form',
 	                    { onSubmit: this.onSubmit },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'username' },
-	                        'Username'
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'username', className: 'mdl-textfield__label' },
+	                            'Username'
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'text',
+	                            name: 'username',
+	                            value: this.state.username,
+	                            onChange: this.onUsernameChange })
 	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'text',
-	                        name: 'username',
-	                        value: this.state.username,
-	                        onChange: this.onUsernameChange }),
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'password' },
-	                        'Password'
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'password', className: 'mdl-textfield__label' },
+	                            'Password'
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'password',
+	                            name: 'password',
+	                            value: this.state.password,
+	                            onChange: this.onPasswordChange })
 	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'password',
-	                        name: 'password',
-	                        value: this.state.password,
-	                        onChange: this.onPasswordChange }),
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'password_confirm' },
-	                        'Confirm Password'
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'password_confirm', className: 'mdl-textfield__label' },
+	                            'Confirm Password'
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'password',
+	                            name: 'password_confirm',
+	                            value: this.state.password_confirm,
+	                            onChange: this.onPasswordConfirmChange })
 	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'password',
-	                        name: 'password_confirm',
-	                        value: this.state.password_confirm,
-	                        onChange: this.onPasswordConfirmChange }),
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'email' },
-	                        'Email'
+	                        'div',
+	                        { className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'email', className: 'mdl-textfield__label' },
+	                            'Email'
+	                        ),
+	                        _react2.default.createElement('input', {
+	                            className: 'mdl-textfield__input',
+	                            type: 'email',
+	                            name: 'email',
+	                            value: this.state.email,
+	                            onChange: this.onEmailChange })
 	                    ),
-	                    _react2.default.createElement('input', {
-	                        type: 'email',
-	                        name: 'email',
-	                        value: this.state.email,
-	                        onChange: this.onEmailChange }),
-	                    _react2.default.createElement('input', { type: 'submit', value: 'Sign up!' })
+	                    _react2.default.createElement(
+	                        'button',
+	                        {
+	                            type: 'submit',
+	                            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' },
+	                        'Sign up!'
+	                    )
 	                )
 	            );
 	        }
@@ -29199,6 +29245,10 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 178);
 	
+	var _axios = __webpack_require__(/*! axios */ 236);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29213,10 +29263,27 @@
 	    function WorkoutsPage(props) {
 	        _classCallCheck(this, WorkoutsPage);
 	
-	        return _possibleConstructorReturn(this, (WorkoutsPage.__proto__ || Object.getPrototypeOf(WorkoutsPage)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (WorkoutsPage.__proto__ || Object.getPrototypeOf(WorkoutsPage)).call(this, props));
+	
+	        _this.state = {
+	            workouts: []
+	        };
+	        return _this;
 	    }
 	
 	    _createClass(WorkoutsPage, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var _this2 = this;
+	
+	            _axios2.default.get('/api/workouts').then(function (res) {
+	                console.log(res.data.workouts);
+	                _this2.setState({ workouts: res.data.workouts });
+	            }).catch(function (err) {
+	                return console.log(err);
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -29231,6 +29298,38 @@
 	                    _reactRouter.Link,
 	                    { to: '/workouts/new' },
 	                    'Add Workout'
+	                ),
+	                _react2.default.createElement(
+	                    'table',
+	                    null,
+	                    _react2.default.createElement(
+	                        'thead',
+	                        null,
+	                        _react2.default.createElement(
+	                            'tr',
+	                            null,
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'Name'
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'tbody',
+	                        null,
+	                        this.state.workouts.map(function (workout, index) {
+	                            return _react2.default.createElement(
+	                                'tr',
+	                                { key: index },
+	                                _react2.default.createElement(
+	                                    'td',
+	                                    null,
+	                                    workout.workout_name
+	                                )
+	                            );
+	                        })
+	                    )
 	                )
 	            );
 	        }
@@ -29292,7 +29391,7 @@
 	        key: 'onSubmit',
 	        value: function onSubmit(e) {
 	            e.preventDefault();
-	            _axios2.default.post('/workouts/new', this.state).then(function (res) {
+	            _axios2.default.post('/api/workouts/new', this.state).then(function (res) {
 	                return console.log(res);
 	            }).catch(function (err) {
 	                return console.log(err);

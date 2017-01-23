@@ -1,9 +1,22 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router'
+import axios from 'axios'
 
 class WorkoutsPage extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            workouts: []
+        }
+    }
+    componentWillMount() {
+        axios
+            .get('/api/workouts')
+            .then(res => {
+                console.log(res.data.workouts);
+                this.setState({workouts: res.data.workouts})
+            })
+            .catch(err => console.log(err))
     }
 
     render() {
@@ -11,6 +24,22 @@ class WorkoutsPage extends Component {
             <div>
                 <p>workouts</p>
                 <Link to="/workouts/new">Add Workout</Link>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this
+                            .state
+                            .workouts
+                            .map((workout,index) => <tr key={index}>
+                                <td>{workout.workout_name}</td>
+                            </tr>)}
+                    </tbody>
+                </table>
             </div>
         )
     }

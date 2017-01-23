@@ -18,7 +18,7 @@ class NewWorkoutPage extends Component {
     onSubmit(e) {
         e.preventDefault()
         axios
-            .post('/workouts/new', this.state)
+            .post('/api/workouts/new', this.state)
             .then(res => console.log(res))
             .catch(err => console.log(err))
     }

@@ -32,8 +32,6 @@ class App extends React.Component {
             <IndexRoute component={WorkoutsPage}/>
             <Route path="new" component={NewWorkoutPage}/>
           </Route>
-
-          <Route path="*" component={NotFound} />
         </Route>
       </Router>
     )

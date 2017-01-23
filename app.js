@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const workouts = require('./routes/workouts')
 
 const app = express();
 
@@ -33,8 +34,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use('/api/workouts', workouts)
 app.use('/users', users);
+app.use('/', index);
 
 
 // Let React handle 404's I think...?
