@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const workouts = require('./routes/workouts')
+const exercises = require('./routes/exercises')
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/workouts', workouts)
+app.use('/api/exercises', exercises)
 app.use('/users', users);
 app.use('/', index);
 

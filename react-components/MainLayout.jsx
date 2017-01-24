@@ -12,6 +12,10 @@ class MainLayout extends Component {
                     path: "/workouts",
                     text: "Workouts",
                     requiresAuthentication: true
+                }, {
+                    path: "/exercises",
+                    text: "Exercises",
+                    requiresAuthentication: true
                 }
             ]
         }
@@ -24,7 +28,7 @@ class MainLayout extends Component {
     isLoggedIn() {
         return this.state.loggedIn
     }
-    
+
     title() {
         return <span className="mdl-layout-title">Exercise Log</span>
     }
@@ -43,7 +47,8 @@ class MainLayout extends Component {
     }
     render() {
         return (
-            <div className="mdl-layout--no-desktop-drawer-button mdl-js-layout mdl-layout--fixed-header">
+            <div
+                className="mdl-layout--no-desktop-drawer-button mdl-js-layout mdl-layout--fixed-header">
                 <header className="mdl-layout__header">
                     <div className="mdl-layout__header-row">
                         {this.title()}

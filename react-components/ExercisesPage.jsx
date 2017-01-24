@@ -2,35 +2,33 @@ import React, {Component} from 'react'
 import {Link} from 'react-router'
 import axios from 'axios'
 
-class WorkoutsPage extends Component {
+class exercisesPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            workouts: []
+            exercises: []
         }
 
     }
-    
-    getWorkouts() {
+
+    getExercises() {
         axios
-            .get('/api/workouts')
-            .then(res => {
-                this.setState({workouts: res.data.workouts})
-            })
+            .get('/api/exercises')
+            .then(res => this.setState({exercises: res.data.exercises}))
             .catch(err => console.log(err))
     }
 
     componentWillMount() {
-        this.getWorkouts()
+        this.getExercises()
     }
 
-    deleteWorkout(workout){}
+    deleteWorkout(workout) {}
 
     render() {
         return (
             <div>
-                <p>workouts</p>
-                <Link to="/workouts/new">Add Workout</Link>
+                <p>exercises</p>
+                <Link to="/exercises/new">Add Exercise</Link>
 
                 <table>
                     <thead>
@@ -41,9 +39,9 @@ class WorkoutsPage extends Component {
                     <tbody>
                         {this
                             .state
-                            .workouts
-                            .map((workout, index) => <tr key={index}>
-                                <td>{workout.workout_name}</td>
+                            .exercises
+                            .map((exercise, index) => <tr key={index}>
+                                <td>{exercise.exercise_name}</td>
                             </tr>)}
                     </tbody>
                 </table>
@@ -52,4 +50,4 @@ class WorkoutsPage extends Component {
     }
 }
 
-export default WorkoutsPage
+export default exercisesPage

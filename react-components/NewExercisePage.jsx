@@ -1,54 +1,48 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 
-class NewWorkoutPage extends Component {
+class NewExercise extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            workoutName: ""
+            exerciseName: ""
         }
-        this.workoutNameOnChange = this
-            .workoutNameOnChange
-            .bind(this);
+        this.exerciseNameOnChange = this
+            .exerciseNameOnChange
+            .bind(this)
         this.onSubmit = this
             .onSubmit
-            .bind(this);
-    }
-
-    onSubmit(e) {
-        e.preventDefault()
-        axios
-            .post('/api/workouts/new', this.state)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-    }
-
-    workoutNameOnChange(e) {
-        this.setState({workoutName: e.target.value})
+            .bind(this)
     }
 
     componentDidUpdate() {
         componentHandler.upgradeDom()
     }
 
-    getAllExercises() { 
-        //get a list of exercises to add to the workout
+    exerciseNameOnChange(e) {
+        this.setState({exerciseName: e.target.value})
     }
 
-    
+    onSubmit(e) {
+        e.preventDefault()
+        axios
+            .post('/api/exercises/new', this.state)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+    }
 
     render() {
         return (
             <div>
-                <h1>New Workout</h1>
+                <h1>New Exercise</h1>
                 <form onSubmit={this.onSubmit}>
                     <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <label htmlFor="workout_name" className="mdl-textfield__label">Name</label>
+                        <label htmlFor="exercise_name" className="mdl-textfield__label">Name</label>
                         <input
                             className="mdl-textfield__input"
                             type="text"
-                            id="workout_name"
-                            onChange={this.workoutNameOnChange}/>
+                            id="exercise_name"
+                            onChange={this.exerciseNameOnChange}/>
                     </div>
 
                     <button
@@ -62,4 +56,4 @@ class NewWorkoutPage extends Component {
     }
 }
 
-export default NewWorkoutPage
+export default NewExercise

@@ -17,8 +17,12 @@ import NotFound from './NotFound.jsx'
 
 import LoginPage from './LoginPage.jsx'
 import RegistrationPage from './RegistrationPage.jsx'
+
 import WorkoutsPage from './WorkoutsPage.jsx'
 import NewWorkoutPage from './NewWorkoutPage.jsx'
+
+import ExercisesPage from './ExercisesPage.jsx'
+import NewExercisePage from './NewExercisePage.jsx'
 
 class App extends React.Component {
   render() {
@@ -31,6 +35,10 @@ class App extends React.Component {
           <Route path="workouts">
             <IndexRoute component={WorkoutsPage}/>
             <Route path="new" component={NewWorkoutPage}/>
+          </Route>
+          <Route path="exercises">
+            <IndexRoute component={ExercisesPage}/>
+            <Route path="new" component={NewExercisePage}/>
           </Route>
         </Route>
       </Router>
