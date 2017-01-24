@@ -29780,41 +29780,55 @@
 	        _this.displayWeek = _this.displayWeek.bind(_this);
 	        _this.monthInputOnChange = _this.monthInputOnChange.bind(_this);
 	        _this.yearInputOnChange = _this.yearInputOnChange.bind(_this);
+	        _this.updateDate = _this.updateDate.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(Calendar, [{
 	        key: "componentDidUpdate",
 	        value: function componentDidUpdate() {
-	            componentHandler.upgradeDom();
+	            // this.upgradeDom()
 	        }
 	    }, {
 	        key: "monthInputOnChange",
 	        value: function monthInputOnChange(e) {
-	            this.setState({ month: e.target.value });
+	            var _this2 = this;
+	
 	            this.setState({
-	                date: new Date(this.state.date.getFullYear(), e.target.value, 1)
+	                month: e.target.value - 1
+	            }, function () {
+	                _this2.updateDate();
+	                console.log(_this2.state);
 	            });
 	        }
 	    }, {
 	        key: "yearInputOnChange",
 	        value: function yearInputOnChange(e) {
-	            this.setState({ year: e.target.value });
+	            var _this3 = this;
 	
 	            this.setState({
-	                date: new Date(e.target.value, this.state.date.getMonth(), 1)
+	                year: e.target.value
+	            }, function () {
+	                _this3.updateDate();
+	            });
+	        }
+	    }, {
+	        key: "updateDate",
+	        value: function updateDate() {
+	            this.setState({
+	                date: new Date(this.state.year, this.state.month)
 	            });
 	        }
 	    }, {
 	        key: "componentWillMount",
 	        value: function componentWillMount() {
-	            var _this2 = this;
+	            var _this4 = this;
 	
 	            this.setState({
 	                days: this.getDaysInMonth()
 	            }, function () {
-	                return _this2.setState({
-	                    weeks: _this2.getWeeks(_this2.state.days)
+	                return _this4.setState({
+	                    weeks: _this4.getWeeks(_this4.state.days)
 	                });
 	            });
 	        }
@@ -29833,7 +29847,7 @@
 	    }, {
 	        key: "displayWeek",
 	        value: function displayWeek(week) {
-	            var _this3 = this;
+	            var _this5 = this;
 	
 	            var divStyle = {
 	                border: "1px solid red"
@@ -29842,7 +29856,7 @@
 	                "div",
 	                { style: divStyle },
 	                week.map(function (day) {
-	                    return _this3.displayDay(day);
+	                    return _this5.displayDay(day);
 	                })
 	            );
 	        }
@@ -29885,7 +29899,7 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            var _this4 = this;
+	            var _this6 = this;
 	
 	            return _react2.default.createElement(
 	                "div",
@@ -29934,7 +29948,7 @@
 	                    _react2.default.createElement(
 	                        "p",
 	                        null,
-	                        this.state.date.getMonth() + 1
+	                        this.state.date.getMonth()
 	                    ),
 	                    _react2.default.createElement(
 	                        "p",
@@ -29943,7 +29957,7 @@
 	                    )
 	                ),
 	                this.state.weeks.map(function (week) {
-	                    return _this4.displayWeek(week);
+	                    return _this6.displayWeek(week);
 	                })
 	            );
 	        }

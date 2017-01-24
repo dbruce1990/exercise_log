@@ -8,7 +8,7 @@ class Calendar extends Component {
             days: [],
             weeks: [],
             monthInput: new Date().getMonth(),
-            yearInput: new Date().getFullYear(),
+            yearInput: new Date().getFullYear()
         }
 
         this.getDaysInMonth = this
@@ -29,24 +29,33 @@ class Calendar extends Component {
         this.yearInputOnChange = this
             .yearInputOnChange
             .bind(this);
+            this.updateDate = this.updateDate.bind(this);
     }
 
     componentDidUpdate() {
-        componentHandler.upgradeDom()
+        // this.upgradeDom()
     }
 
     monthInputOnChange(e) {
-        this.setState({month: e.target.value})
         this.setState({
-            date: new Date(this.state.date.getFullYear(), e.target.value, 1)
+            month: e.target.value - 1
+        }, () => {
+            this.updateDate()
+            console.log(this.state)
         })
     }
 
     yearInputOnChange(e) {
-        this.setState({year: e.target.value})
-
         this.setState({
-            date: new Date(e.target.value, this.state.date.getMonth(), 1)
+            year: e.target.value
+        }, () => {
+            this.updateDate()
+        })
+    }
+
+    updateDate() {
+        this.setState({
+            date: new Date(this.state.year, this.state.month)
         })
     }
 
@@ -138,7 +147,7 @@ class Calendar extends Component {
                     <p>{this
                             .state
                             .date
-                            .getMonth() + 1}</p>
+                            .getMonth()}</p>
                     <p>{this
                             .state
                             .date
