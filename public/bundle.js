@@ -29780,83 +29780,53 @@
 	        _this.displayWeek = _this.displayWeek.bind(_this);
 	        _this.monthInputOnChange = _this.monthInputOnChange.bind(_this);
 	        _this.yearInputOnChange = _this.yearInputOnChange.bind(_this);
-	        _this.updateDate = _this.updateDate.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(Calendar, [{
-	        key: "componentDidUpdate",
-	        value: function componentDidUpdate() {
-	            // this.upgradeDom()
-	        }
-	    }, {
 	        key: "monthInputOnChange",
 	        value: function monthInputOnChange(e) {
-	            var _this2 = this;
-	
 	            this.setState({
 	                month: e.target.value - 1
-	            }, function () {
-	                _this2.updateDate();
-	                console.log(_this2.state);
 	            });
 	        }
 	    }, {
 	        key: "yearInputOnChange",
 	        value: function yearInputOnChange(e) {
-	            var _this3 = this;
-	
-	            this.setState({
-	                year: e.target.value
-	            }, function () {
-	                _this3.updateDate();
-	            });
-	        }
-	    }, {
-	        key: "updateDate",
-	        value: function updateDate() {
-	            this.setState({
-	                date: new Date(this.state.year, this.state.month)
-	            });
+	            this.setState({ year: e.target.value });
 	        }
 	    }, {
 	        key: "componentWillMount",
 	        value: function componentWillMount() {
-	            var _this4 = this;
+	            var _this2 = this;
 	
 	            this.setState({
 	                days: this.getDaysInMonth()
 	            }, function () {
-	                return _this4.setState({
-	                    weeks: _this4.getWeeks(_this4.state.days)
+	                return _this2.setState({
+	                    weeks: _this2.getWeeks(_this2.state.days)
 	                });
 	            });
 	        }
 	    }, {
 	        key: "displayDay",
 	        value: function displayDay(day) {
-	            var divStyle = {
-	                border: "1px solid black"
-	            };
 	            return _react2.default.createElement(
 	                "div",
-	                { style: divStyle },
+	                { className: "calendar__day--highlight mdl-cell mdl-cell--1-col" },
 	                day.getDate()
 	            );
 	        }
 	    }, {
 	        key: "displayWeek",
 	        value: function displayWeek(week) {
-	            var _this5 = this;
+	            var _this3 = this;
 	
-	            var divStyle = {
-	                border: "1px solid red"
-	            };
 	            return _react2.default.createElement(
 	                "div",
-	                { style: divStyle },
+	                { className: "mdl-grid" },
 	                week.map(function (day) {
-	                    return _this5.displayDay(day);
+	                    return _this3.displayDay(day);
 	                })
 	            );
 	        }
@@ -29894,12 +29864,10 @@
 	            }
 	            return days;
 	        }
-	        //allow user to pick month and year
-	
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            var _this6 = this;
+	            var _this4 = this;
 	
 	            return _react2.default.createElement(
 	                "div",
@@ -29957,7 +29925,7 @@
 	                    )
 	                ),
 	                this.state.weeks.map(function (week) {
-	                    return _this6.displayWeek(week);
+	                    return _this4.displayWeek(week);
 	                })
 	            );
 	        }

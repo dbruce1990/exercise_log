@@ -29,34 +29,16 @@ class Calendar extends Component {
         this.yearInputOnChange = this
             .yearInputOnChange
             .bind(this);
-            this.updateDate = this.updateDate.bind(this);
-    }
-
-    componentDidUpdate() {
-        // this.upgradeDom()
     }
 
     monthInputOnChange(e) {
         this.setState({
             month: e.target.value - 1
-        }, () => {
-            this.updateDate()
-            console.log(this.state)
         })
     }
 
     yearInputOnChange(e) {
-        this.setState({
-            year: e.target.value
-        }, () => {
-            this.updateDate()
-        })
-    }
-
-    updateDate() {
-        this.setState({
-            date: new Date(this.state.year, this.state.month)
-        })
+        this.setState({year: e.target.value})
     }
 
     componentWillMount() {
@@ -68,20 +50,14 @@ class Calendar extends Component {
     }
 
     displayDay(day) {
-        const divStyle = {
-            border: "1px solid black"
-        }
         return (
-            <div style={divStyle}>{day.getDate()}</div>
+            <div className="calendar__day--highlight mdl-cell mdl-cell--1-col">{day.getDate()}</div>
         )
     }
 
     displayWeek(week) {
-        const divStyle = {
-            border: "1px solid red"
-        }
         return (
-            <div style={divStyle}>
+            <div className="mdl-grid">
                 {week.map(day => this.displayDay(day))}
             </div>
         )
@@ -120,7 +96,6 @@ class Calendar extends Component {
         }
         return days
     }
-    //allow user to pick month and year
     render() {
         return (
             <div>
