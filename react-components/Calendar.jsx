@@ -29,6 +29,7 @@ class Calendar extends Component {
         this.yearInputOnChange = this
             .yearInputOnChange
             .bind(this);
+            this.displayMonth = this.displayMonth.bind(this);
     }
 
     monthInputOnChange(e) {
@@ -61,6 +62,51 @@ class Calendar extends Component {
                 {week.map(day => this.displayDay(day))}
             </div>
         )
+    }
+
+    displayMonth() {
+        let month = ""
+        switch (this.state.date.getMonth()) {
+            case 0:
+                month = "January"
+                break
+            case 1:
+                month = "February"
+                break
+            case 2:
+                month = "March"
+                break
+            case 3:
+                month = "April"
+                break
+            case 4:
+                month = "May"
+                break
+            case 5:
+                month = "June"
+                break
+            case 6:
+                month = "July"
+                break
+            case 7:
+                month = "August"
+                break
+            case 8:
+                month = "September"
+                break
+            case 9:
+                month = "October"
+                break
+            case 10:
+                month = "November"
+                break
+            case 11:
+                month = "December"
+                break
+                default: month = "You broke time!"
+
+        }
+        return <h2>{month}</h2>
     }
 
     getWeeks(days) {
@@ -96,6 +142,7 @@ class Calendar extends Component {
         }
         return days
     }
+
     render() {
         return (
             <div>
@@ -117,7 +164,7 @@ class Calendar extends Component {
                         id="calendar_year"
                         onChange={this.yearInputOnChange}/>
                 </div>
-
+                {this.displayMonth()}
                 <div>
                     <p>{this
                             .state

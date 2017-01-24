@@ -29780,6 +29780,7 @@
 	        _this.displayWeek = _this.displayWeek.bind(_this);
 	        _this.monthInputOnChange = _this.monthInputOnChange.bind(_this);
 	        _this.yearInputOnChange = _this.yearInputOnChange.bind(_this);
+	        _this.displayMonth = _this.displayMonth.bind(_this);
 	        return _this;
 	    }
 	
@@ -29828,6 +29829,57 @@
 	                week.map(function (day) {
 	                    return _this3.displayDay(day);
 	                })
+	            );
+	        }
+	    }, {
+	        key: "displayMonth",
+	        value: function displayMonth() {
+	            var month = "";
+	            switch (this.state.date.getMonth()) {
+	                case 0:
+	                    month = "January";
+	                    break;
+	                case 1:
+	                    month = "February";
+	                    break;
+	                case 2:
+	                    month = "March";
+	                    break;
+	                case 3:
+	                    month = "April";
+	                    break;
+	                case 4:
+	                    month = "May";
+	                    break;
+	                case 5:
+	                    month = "June";
+	                    break;
+	                case 6:
+	                    month = "July";
+	                    break;
+	                case 7:
+	                    month = "August";
+	                    break;
+	                case 8:
+	                    month = "September";
+	                    break;
+	                case 9:
+	                    month = "October";
+	                    break;
+	                case 10:
+	                    month = "November";
+	                    break;
+	                case 11:
+	                    month = "December";
+	                    break;
+	                default:
+	                    month = "You broke time!";
+	
+	            }
+	            return _react2.default.createElement(
+	                "h2",
+	                null,
+	                month
 	            );
 	        }
 	    }, {
@@ -29910,6 +29962,7 @@
 	                        id: "calendar_year",
 	                        onChange: this.yearInputOnChange })
 	                ),
+	                this.displayMonth(),
 	                _react2.default.createElement(
 	                    "div",
 	                    null,
