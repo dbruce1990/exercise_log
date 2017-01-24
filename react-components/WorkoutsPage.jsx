@@ -10,7 +10,7 @@ class WorkoutsPage extends Component {
         }
 
     }
-    
+
     getWorkouts() {
         axios
             .get('/api/workouts')
@@ -24,7 +24,9 @@ class WorkoutsPage extends Component {
         this.getWorkouts()
     }
 
-    deleteWorkout(workout){}
+    deleteWorkout(workout) {}
+
+    updateWorkout(workout) {}
 
     render() {
         return (

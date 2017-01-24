@@ -91,6 +91,10 @@
 	
 	var _NewExercisePage2 = _interopRequireDefault(_NewExercisePage);
 	
+	var _Calendar = __webpack_require__(/*! ./Calendar.jsx */ 266);
+	
+	var _Calendar2 = _interopRequireDefault(_Calendar);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -158,7 +162,8 @@
 	            { path: 'exercises' },
 	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _ExercisesPage2.default }),
 	            _react2.default.createElement(_reactRouter.Route, { path: 'new', component: _NewExercisePage2.default })
-	          )
+	          ),
+	          _react2.default.createElement(_reactRouter.Route, { path: 'calendar', component: _Calendar2.default })
 	        )
 	      );
 	    }
@@ -27230,6 +27235,9 @@
 	                path: "/exercises",
 	                text: "Exercises",
 	                requiresAuthentication: true
+	            }, {
+	                path: "/calendar",
+	                text: "Calendar"
 	            }]
 	        };
 	
@@ -29311,6 +29319,9 @@
 	        key: 'deleteWorkout',
 	        value: function deleteWorkout(workout) {}
 	    }, {
+	        key: 'updateWorkout',
+	        value: function updateWorkout(workout) {}
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -29719,6 +29730,229 @@
 	}(_react.Component);
 	
 	exports.default = NewExercise;
+
+/***/ },
+/* 266 */
+/*!***************************************!*\
+  !*** ./react-components/Calendar.jsx ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Calendar = function (_Component) {
+	    _inherits(Calendar, _Component);
+	
+	    function Calendar(props) {
+	        _classCallCheck(this, Calendar);
+	
+	        var _this = _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props));
+	
+	        _this.state = {
+	            date: new Date(),
+	            days: [],
+	            weeks: [],
+	            monthInput: new Date().getMonth(),
+	            yearInput: new Date().getFullYear()
+	        };
+	
+	        _this.getDaysInMonth = _this.getDaysInMonth.bind(_this);
+	        _this.displayDay = _this.displayDay.bind(_this);
+	        _this.getWeeks = _this.getWeeks.bind(_this);
+	        _this.displayWeek = _this.displayWeek.bind(_this);
+	        _this.monthInputOnChange = _this.monthInputOnChange.bind(_this);
+	        _this.yearInputOnChange = _this.yearInputOnChange.bind(_this);
+	        return _this;
+	    }
+	
+	    _createClass(Calendar, [{
+	        key: "componentDidUpdate",
+	        value: function componentDidUpdate() {
+	            componentHandler.upgradeDom();
+	        }
+	    }, {
+	        key: "monthInputOnChange",
+	        value: function monthInputOnChange(e) {
+	            this.setState({ month: e.target.value });
+	            this.setState({
+	                date: new Date(this.state.date.getFullYear(), e.target.value, 1)
+	            });
+	        }
+	    }, {
+	        key: "yearInputOnChange",
+	        value: function yearInputOnChange(e) {
+	            this.setState({ year: e.target.value });
+	
+	            this.setState({
+	                date: new Date(e.target.value, this.state.date.getMonth(), 1)
+	            });
+	        }
+	    }, {
+	        key: "componentWillMount",
+	        value: function componentWillMount() {
+	            var _this2 = this;
+	
+	            this.setState({
+	                days: this.getDaysInMonth()
+	            }, function () {
+	                return _this2.setState({
+	                    weeks: _this2.getWeeks(_this2.state.days)
+	                });
+	            });
+	        }
+	    }, {
+	        key: "displayDay",
+	        value: function displayDay(day) {
+	            var divStyle = {
+	                border: "1px solid black"
+	            };
+	            return _react2.default.createElement(
+	                "div",
+	                { style: divStyle },
+	                day.getDate()
+	            );
+	        }
+	    }, {
+	        key: "displayWeek",
+	        value: function displayWeek(week) {
+	            var _this3 = this;
+	
+	            var divStyle = {
+	                border: "1px solid red"
+	            };
+	            return _react2.default.createElement(
+	                "div",
+	                { style: divStyle },
+	                week.map(function (day) {
+	                    return _this3.displayDay(day);
+	                })
+	            );
+	        }
+	    }, {
+	        key: "getWeeks",
+	        value: function getWeeks(days) {
+	            var divStyle = {
+	                border: "1px solid black"
+	            };
+	
+	            var weeks = [[], [], [], [], []];
+	            days.forEach(function (day) {
+	                if (day.getDate() <= 7) {
+	                    weeks[0].push(day);
+	                } else if (day.getDate() <= 14) {
+	                    weeks[1].push(day);
+	                } else if (day.getDate() <= 21) {
+	                    weeks[2].push(day);
+	                } else if (day.getDate() <= 28) {
+	                    weeks[3].push(day);
+	                } else {
+	                    weeks[4].push(day);
+	                }
+	            });
+	            return weeks;
+	        }
+	    }, {
+	        key: "getDaysInMonth",
+	        value: function getDaysInMonth() {
+	            var date = new Date(this.state.date.getFullYear(), this.state.date.getMonth(), 1);
+	            var days = [];
+	            while (date.getMonth() === this.state.date.getMonth()) {
+	                days.push(new Date(date));
+	                date.setDate(date.getDate() + 1);
+	            }
+	            return days;
+	        }
+	        //allow user to pick month and year
+	
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var _this4 = this;
+	
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                _react2.default.createElement(
+	                    "h1",
+	                    null,
+	                    "Calendar"
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label" },
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "calendar_month", className: "mdl-textfield__label" },
+	                        "Month"
+	                    ),
+	                    _react2.default.createElement("input", {
+	                        className: "mdl-textfield__input",
+	                        type: "number",
+	                        id: "calendar_month",
+	                        onChange: this.monthInputOnChange }),
+	                    _react2.default.createElement(
+	                        "span",
+	                        { className: "mdl-textfield__error" },
+	                        "Enter a number between 1-12."
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label" },
+	                    _react2.default.createElement(
+	                        "label",
+	                        { htmlFor: "calendar_year", className: "mdl-textfield__label" },
+	                        "Year"
+	                    ),
+	                    _react2.default.createElement("input", {
+	                        className: "mdl-textfield__input",
+	                        type: "number",
+	                        id: "calendar_year",
+	                        onChange: this.yearInputOnChange })
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    null,
+	                    _react2.default.createElement(
+	                        "p",
+	                        null,
+	                        this.state.date.getMonth() + 1
+	                    ),
+	                    _react2.default.createElement(
+	                        "p",
+	                        null,
+	                        this.state.date.getFullYear()
+	                    )
+	                ),
+	                this.state.weeks.map(function (week) {
+	                    return _this4.displayWeek(week);
+	                })
+	            );
+	        }
+	    }]);
+	
+	    return Calendar;
+	}(_react.Component);
+	
+	exports.default = Calendar;
 
 /***/ }
 /******/ ]);

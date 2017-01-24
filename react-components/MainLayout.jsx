@@ -16,6 +16,9 @@ class MainLayout extends Component {
                     path: "/exercises",
                     text: "Exercises",
                     requiresAuthentication: true
+                },{
+                    path: "/calendar",
+                    text: "Calendar"
                 }
             ]
         }

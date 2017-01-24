@@ -24,6 +24,8 @@ import NewWorkoutPage from './NewWorkoutPage.jsx'
 import ExercisesPage from './ExercisesPage.jsx'
 import NewExercisePage from './NewExercisePage.jsx'
 
+import Calendar from './Calendar.jsx'
+
 class App extends React.Component {
   render() {
     return (
@@ -40,6 +42,7 @@ class App extends React.Component {
             <IndexRoute component={ExercisesPage}/>
             <Route path="new" component={NewExercisePage}/>
           </Route>
+          <Route path="calendar" component={Calendar}/>
         </Route>
       </Router>
     )
