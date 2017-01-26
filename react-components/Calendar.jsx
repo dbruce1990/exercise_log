@@ -137,7 +137,30 @@ class Calendar extends Component {
                 month = "You broke time!"
 
         }
-        return <h2>{month}</h2>
+        return (
+            <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--1-col">
+                    <button
+                        className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect"
+                        onClick={this.previousMonth}>
+                        <i className="material-icons">remove</i>
+                    </button>
+                </div>
+
+                <div className="mdl-cell mdl-cell--4-col">
+                    <h2>{month}</h2>
+                </div>
+
+                <div className="mdl-cell mdl-cell--1-col">
+                    <button
+                        className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect"
+                        onClick={this.nextMonth}>
+                        <i className="material-icons">add</i>
+                    </button>
+                </div>
+
+            </div>
+        )
     }
 
     getWeeks(days) {
@@ -195,23 +218,9 @@ class Calendar extends Component {
                         id="calendar_year"
                         onChange={this.yearInputOnChange}/>
                 </div>
-                <div className="mdl-grid">
-                    <div className="mdl-cell mdl-cell--1-col">
-                        <button
-                            className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect"
-                            onClick={this.previousMonth}>
-                            <i className="material-icons">remove</i>
-                        </button>
-                    </div>
-                    <div className="mdl-cell mdl-cell--1-col">{this.displayMonthName()}</div>
-                    <div className="mdl-cell mdl-cell--1-col">
-                        <button
-                            className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect"
-                            onClick={this.nextMonth}>
-                            <i className="material-icons">add</i>
-                        </button>
-                    </div>
-                </div>
+
+                <div>{this.displayMonthName()}</div>
+
                 <div>
                     <p>{this.state.month}</p>
                     <p>{this.state.year}</p>
