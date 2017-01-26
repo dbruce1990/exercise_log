@@ -8,7 +8,9 @@ class Calendar extends Component {
             days: [],
             weeks: [],
             monthInput: new Date().getMonth(),
-            yearInput: new Date().getFullYear()
+            yearInput: new Date().getFullYear(),
+            month: new Date().getMonth(),
+            year: new Date().getFullYear()
         }
 
         this.getDaysInMonth = this
@@ -29,7 +31,35 @@ class Calendar extends Component {
         this.yearInputOnChange = this
             .yearInputOnChange
             .bind(this);
-            this.displayMonth = this.displayMonth.bind(this);
+        this.displayMonthName = this
+            .displayMonthName
+            .bind(this);
+        this.previousMonth = this
+            .previousMonth
+            .bind(this)
+        this.nextMonth = this
+            .nextMonth
+            .bind(this)
+    }
+
+    previousMonth(e) {
+        e.preventDefault()
+        if (this.state.month <= 0) 
+            this.setState({month: 11})
+        else 
+            this.setState({
+                month: this.state.month - 1
+            })
+    }
+
+    nextMonth(e) {
+        e.preventDefault()
+        if (this.state.month >= 11) 
+            this.setState({month: 0})
+        else 
+            this.setState({
+                month: this.state.month + 1
+            })
     }
 
     monthInputOnChange(e) {
@@ -64,9 +94,9 @@ class Calendar extends Component {
         )
     }
 
-    displayMonth() {
+    displayMonthName() {
         let month = ""
-        switch (this.state.date.getMonth()) {
+        switch (this.state.month) {
             case 0:
                 month = "January"
                 break
@@ -103,7 +133,8 @@ class Calendar extends Component {
             case 11:
                 month = "December"
                 break
-                default: month = "You broke time!"
+            default:
+                month = "You broke time!"
 
         }
         return <h2>{month}</h2>
@@ -164,16 +195,26 @@ class Calendar extends Component {
                         id="calendar_year"
                         onChange={this.yearInputOnChange}/>
                 </div>
-                {this.displayMonth()}
+                <div className="mdl-grid">
+                    <div className="mdl-cell mdl-cell--1-col">
+                        <button
+                            className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect"
+                            onClick={this.previousMonth}>
+                            <i className="material-icons">remove</i>
+                        </button>
+                    </div>
+                    <div className="mdl-cell mdl-cell--1-col">{this.displayMonthName()}</div>
+                    <div className="mdl-cell mdl-cell--1-col">
+                        <button
+                            className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect"
+                            onClick={this.nextMonth}>
+                            <i className="material-icons">add</i>
+                        </button>
+                    </div>
+                </div>
                 <div>
-                    <p>{this
-                            .state
-                            .date
-                            .getMonth()}</p>
-                    <p>{this
-                            .state
-                            .date
-                            .getFullYear()}</p>
+                    <p>{this.state.month}</p>
+                    <p>{this.state.year}</p>
                 </div>
                 {this
                     .state
@@ -184,4 +225,4 @@ class Calendar extends Component {
     }
 }
 
-export default Calendar
+module.exports = Calendar
