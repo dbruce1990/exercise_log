@@ -36,21 +36,29 @@ class Calendar extends Component {
 
     previousMonth(e) {
         e.preventDefault()
-        if (this.state.month <= 0) 
-            this.setState({month: 11})
+        const month = this.state.month
+        if (month <= 0) 
+            this.setState({
+                month: 11,
+                year: this.state.year - 1
+            })
         else 
             this.setState({
-                month: this.state.month - 1
+                month: month - 1
             })
     }
 
     nextMonth(e) {
         e.preventDefault()
-        if (this.state.month >= 11) 
-            this.setState({month: 0})
+        const month = this.state.month
+        if (month >= 11) 
+            this.setState({
+                month: 0,
+                year: this.state.year + 1
+            })
         else 
             this.setState({
-                month: this.state.month + 1
+                month: month + 1
             })
     }
 
@@ -94,7 +102,7 @@ class Calendar extends Component {
                 month = "December"
                 break
             default:
-                month = "You broke time!"
+                month = "You broke the calendar!"
 
         }
         return (
@@ -104,7 +112,7 @@ class Calendar extends Component {
                 </div>
 
                 <div className="mdl-cell mdl-cell--4-col">
-                    <h2>{month}</h2>
+                    <h3>{month}, {this.state.year}</h3>
                 </div>
 
                 <div className="mdl-cell mdl-cell--1-col" onClick={this.nextMonth}>
@@ -173,7 +181,6 @@ class Calendar extends Component {
             : <td key={"empty" + i}>empty</td>
 
         const renderWeek = (week, i) => <tr key={"week" + i}>{week.map((day, i) => renderDay(day, i))}</tr>
-        
 
         month = month.map((week, i) => renderWeek(week, i))
         return month
