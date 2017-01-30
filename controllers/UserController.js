@@ -38,7 +38,7 @@ function register(req, res, next) {
 
     }
 
-const invalidCredentialsErr = res => res.json({error: 'invalid email or password', content: null})
+const invalidCredentialsErr = res => res.json({error: 'invalid email or password'})
 function login(req, res, next) {
     //get hash from db
     const query = 'SELECT user_password_hash FROM users WHERE user_email=$1'
