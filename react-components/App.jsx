@@ -24,7 +24,7 @@ import NewWorkoutPage from './NewWorkoutPage.jsx'
 import ExercisesPage from './ExercisesPage.jsx'
 import NewExercisePage from './NewExercisePage.jsx'
 
-import Calendar from './Calendar.jsx'
+import Calendar from './Calendar/Calendar.jsx'
 
 class App extends React.Component {
   render() {

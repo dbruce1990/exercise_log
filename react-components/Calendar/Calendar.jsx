@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+import Day from './CalendarDay.jsx'
+
 class Calendar extends Component {
     constructor(props) {
         super(props)
@@ -17,6 +19,20 @@ class Calendar extends Component {
                 "Thursday",
                 "Friday",
                 "Saturday"
+            ],
+            monthNames: [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
             ]
         }
 
@@ -63,48 +79,6 @@ class Calendar extends Component {
     }
 
     displayMonthName() {
-        let month = ""
-        switch (this.state.month) {
-            case 0:
-                month = "January"
-                break
-            case 1:
-                month = "February"
-                break
-            case 2:
-                month = "March"
-                break
-            case 3:
-                month = "April"
-                break
-            case 4:
-                month = "May"
-                break
-            case 5:
-                month = "June"
-                break
-            case 6:
-                month = "July"
-                break
-            case 7:
-                month = "August"
-                break
-            case 8:
-                month = "September"
-                break
-            case 9:
-                month = "October"
-                break
-            case 10:
-                month = "November"
-                break
-            case 11:
-                month = "December"
-                break
-            default:
-                month = "You broke the calendar!"
-
-        }
         return (
             <div className="mdl-grid">
                 <div className="mdl-cell mdl-cell--1-col" onClick={this.previousMonth}>
@@ -112,7 +86,7 @@ class Calendar extends Component {
                 </div>
 
                 <div className="mdl-cell mdl-cell--4-col">
-                    <h3>{month}, {this.state.year}</h3>
+                    <h3>{this.state.monthNames[this.state.month]}, {this.state.year}</h3>
                 </div>
 
                 <div className="mdl-cell mdl-cell--1-col" onClick={this.nextMonth}>
@@ -138,15 +112,7 @@ class Calendar extends Component {
         let month = []
 
         let week = 0
-        let currentWeek = [
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        ]
+        let currentWeek = [null,null,null,null,null,null,null]
 
         daysInMonth.forEach(today => {
             const dayOfWeek = today.getDay()
@@ -158,15 +124,7 @@ class Calendar extends Component {
 
             if (isSaturday()) {
                 month[week] = currentWeek
-                currentWeek = [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ]
+                currentWeek = [null,null,null,null,null,null,null]
                 week += 1
             }
 
@@ -176,11 +134,7 @@ class Calendar extends Component {
 
         })
 
-        const renderDay = (day, i) => day !== null
-            ? <td key={"day" + i}>{day.getDate()}</td>
-            : <td key={"empty" + i}>empty</td>
-
-        const renderWeek = (week, i) => <tr key={"week" + i}>{week.map((day, i) => renderDay(day, i))}</tr>
+        const renderWeek = (week, i) => <tr key={"week" + i}>{week.map((day, i) => <Day key={"day" + i} day={day} />)}</tr>
 
         month = month.map((week, i) => renderWeek(week, i))
         return month
